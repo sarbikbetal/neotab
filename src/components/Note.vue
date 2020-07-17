@@ -2,46 +2,66 @@
   <div>
     <p
       @keydown.enter="focusOut"
-      contenteditable="true"
-      class="font-bold text-xl w-auto px-1 text-gray-700 no-underline appearance-none focus:outline-none focus:bg-gray-100"
-      type="text"
+      @dblclick="makeEditable"
+      @blur="updateTitle"
       spellcheck="false"
-      @input="update"
+      class="title font-bold text-xl rounded-sm mr-8 px-1 text-gray-700 appearance-none focus:outline-none focus:bg-gray-200"
     >{{titleData}}</p>
     <p
-      contenteditable="true"
+      @keydown.enter="focusOut"
+      @dblclick="makeEditable"
+      @blur="updateNote"
       spellcheck="false"
-      class="text-gray-600 p-1 rounded-sm text-base appearance-none focus:outline-none focus:bg-gray-200 w-full"
+      class="note p-1 mt-1 rounded-sm focus:outline-none focus:bg-gray-200"
     >{{noteData}}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Note",
+  name: "note",
   props: {
     title: String,
-    note: String
+    body: String
   },
   data: function() {
     return {
       titleData: this.title,
-      noteData: this.note || "Click here to add something.."
+      noteData: this.body || "Click here to add something.."
     };
   },
   methods: {
-    focusOut() {
-      document.activeElement.blur();
+    focusOut(e) {
+      e.target.blur();
+      this.removeEditable(e);
     },
-    update(e) {
+    updateTitle(e) {
+      this.titleData = e.target.innerText;
+    },
+    updateNote(e) {
       this.noteData = e.target.innerText;
+    },
+    makeEditable(e) {
+      e.target.contentEditable = true;
+      e.target.focus();
+    },
+    removeEditable(e) {
+      e.target.contentEditable = false;
     }
   }
 };
 </script>
 
 <style scoped>
-input {
-  transition: all 300ms ease-out;
+p {
+  transition: all 200ms ease-out;
+  text-decoration: none;
+}
+
+.note {
+  @apply text-gray-600;
+  @apply text-base;
+  appearance: none;
+  border: solid #bebebe52 1px;
 }
 </style>

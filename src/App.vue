@@ -11,6 +11,19 @@ export default {
   name: "App",
   components: {
     newtab
+  },
+  mounted: function() {
+    console.log("Paste filter registered");
+    document.querySelector("#app").addEventListener("paste", function(e) {
+      e.preventDefault();
+      if (e.clipboardData && e.clipboardData.getData) {
+        var text = e.clipboardData.getData("text/plain");
+        document.execCommand("insertHTML", false, text);
+      } else if (window.clipboardData && window.clipboardData.getData) {
+        var text = window.clipboardData.getData("Text");
+        insertTextAtCursor(text);
+      }
+    });
   }
 };
 </script>
