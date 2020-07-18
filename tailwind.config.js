@@ -6,6 +6,8 @@ module.exports = {
     },
     extend: {},
   },
-  variants: {},
+  variants: {
+    cursor: ['focus'],
+  },
   plugins: [],
 }

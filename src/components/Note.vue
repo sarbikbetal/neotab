@@ -17,10 +17,10 @@ export default {
     cardId: Number,
     body: String
   },
-  data: function() {
-    return {
-      noteData: this.body
-    };
+  computed: {
+    noteData() {
+      return this.body;
+    }
   },
   methods: {
     focusOut(e) {

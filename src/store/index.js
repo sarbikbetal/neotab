@@ -12,8 +12,8 @@ export default new Store({
                     type: "todo",
                     title: "Zym",
                     body: [
-                        { id: 1, text: "This is a todo", done: true },
-                        { id: 2, text: "This is another todo", done: false }
+                        { id: 0, text: "This is a todo", done: true },
+                        { id: 1, text: "This is another todo", done: false }
                     ]
                 },
                 {
@@ -30,6 +30,7 @@ export default new Store({
                 { id: 7, type: "note", title: "Zazam", text: "And I am a lote!" },
             ]
         ],
+        counters: [9, 18],
         columns: [0, 1]
     },
     mutations: {
@@ -50,7 +51,8 @@ export default new Store({
                 const cards = state.cardData[i];
                 let cardIndex = cards.findIndex(card => card.id == id);
                 if (cardIndex != -1) {
-                    return state.cardData[i][cardIndex].title = title;
+                    state.cardData[i][cardIndex].title = title;
+                    break;
                 }
             }
         },
@@ -59,9 +61,67 @@ export default new Store({
                 const cards = state.cardData[i];
                 let cardIndex = cards.findIndex(card => card.id == id);
                 if (cardIndex != -1) {
-                    return state.cardData[i][cardIndex].text = note;
+                    state.cardData[i][cardIndex].text = note;
+                    break;
                 }
             }
-        }
+        },
+        updateTodo(state, { id, todoId, todo }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    const todoList = state.cardData[i][cardIndex].body;
+                    let todoIndex = todoList.findIndex(todo => todo.id == todoId);
+                    if (todoIndex != -1) {
+                        state.cardData[i][cardIndex].body[todoIndex].text = todo;
+                        break;
+                    }
+                }
+            }
+        },
+        markTodo(state, { id, todoId }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    const todoList = state.cardData[i][cardIndex].body;
+                    let todoIndex = todoList.findIndex(todo => todo.id == todoId);
+                    if (todoIndex != -1) {
+                        let done = state.cardData[i][cardIndex].body[todoIndex].done;
+                        state.cardData[i][cardIndex].body[todoIndex].done = !done;
+                        break;
+                    }
+                }
+            }
+        },
+        removeTodo(state, { id, todoId }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    const todoList = state.cardData[i][cardIndex].body;
+                    let newList = todoList.filter(todo => todo.id != todoId);
+                    state.cardData[i][cardIndex].body = newList;
+                    break;
+                }
+            }
+        },
+        addTodo(state, { id }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    state.cardData[i][cardIndex].body.push(
+                        {
+                            id: state.counters[1]++,
+                            text: " ",
+                            done: false
+                        }
+                    );
+                    break;
+                }
+            }
+        },
     }
 })

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative pb-3 mt-1">
     <draggable
       v-model="todoList"
       group="todos"
@@ -8,37 +8,109 @@
       handle=".todo-handle"
       ghost-class="todo-ghost"
     >
-      <transition-group name="todo" tag="div">
+      <transition-group name="todo" tag="div" @after-enter="setFocus">
         <div v-for="todo in todoList" :key="todo.id">
-          <i class="todo-handle opacity-25 hover:opacity-75" />
-          <p :class="todo.done ? 'line-through' : 'no-underline'" class="todo">{{todo.text}}</p>
+          <i @click="markTodo($event, todo.id)" class="todo-handle opacity-25 hover:opacity-75" />
+          <i @click="removeTodo($event, todo.id)" class="remove opacity-25 hover:opacity-100" />
+          <p
+            @keydown.enter="addTodo"
+            @keydown.esc="blurOrRemove($event, todo.id)"
+            @keydown.delete="checkToRemove($event, todo.id)"
+            @dblclick="makeEditable"
+            @blur="updateTodo($event, todo.id)"
+            spellcheck="false"
+            :class="todo.done ? 'line-through' : 'no-underline'"
+            class="todo px-5 focus:outline-none focus:bg-gray-200 focus:cursor-text"
+          >{{todo.text}}</p>
         </div>
       </transition-group>
     </draggable>
+    <fab class="mr-2 select-none" @click.native="addTodo">
+      <img src="/img/icons/add.svg" alt="add todo" />
+    </fab>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
+import fab from "@/components/Fab";
 export default {
   name: "todo",
   components: {
-    draggable
+    draggable,
+    fab
   },
   props: {
+    cardId: Number,
     body: Array
   },
-  data: function() {
-    return {
-      todoList: this.body
-    };
+  computed: {
+    todoList() {
+      return this.body;
+    }
   },
+  methods: {
+    addTodo(e) {
+      this.$store.commit("addTodo", {
+        id: this.cardId
+      });
+      e.target.blur();
+    },
+    updateTodo(e, id) {
+      this.$store.commit("updateTodo", {
+        id: this.cardId,
+        todoId: id,
+        todo: e.target.innerText
+      });
+      this.removeEditable(e);
+    },
+    markTodo(e, id) {
+      this.$store.commit("markTodo", {
+        id: this.cardId,
+        todoId: id
+      });
+    },
+    removeTodo(e, id) {
+      this.$store.commit("removeTodo", {
+        id: this.cardId,
+        todoId: id
+      });
+    },
+    checkToRemove(e, id) {
+      if (e.target.innerText.length == 0) {
+        this.setFocus(e.target.parentElement.previousElementSibling);
+        this.$store.commit("removeTodo", {
+          id: this.cardId,
+          todoId: id
+        });
+      }
+    },
+    blurOrRemove(e, id) {
+      e.target.blur();
+      this.checkToRemove(e, id);
+    },
+    makeEditable(e) {
+      e.target.contentEditable = true;
+      e.target.focus();
+    },
+    removeEditable(e) {
+      e.target.contentEditable = false;
+    },
+    setFocus(el) {
+      let todo = el.lastChild;
+      todo.contentEditable = true;
+      todo.focus();
+    }
+  }
 };
 </script>
 
 <style>
 .todo {
-  @apply pl-4;
+  @apply rounded-sm;
+  @apply break-all;
+  @apply cursor-pointer;
+  min-height: 24px;
 }
 .todo-enter-active {
   transition: all 0.3s;
@@ -55,7 +127,7 @@ export default {
 }
 .todo-handle {
   float: left;
-  cursor: move;
+  cursor: pointer;
   margin: 4px 0;
   height: 16px;
   width: 16px;
@@ -64,5 +136,15 @@ export default {
 }
 .todo-ghost {
   opacity: 0.2;
+}
+
+.remove {
+  float: right;
+  cursor: pointer;
+  margin: 4px;
+  height: 16px;
+  width: 16px;
+  background: no-repeat url("/img/icons/remove.svg");
+  background-size: 16px 16px;
 }
 </style>

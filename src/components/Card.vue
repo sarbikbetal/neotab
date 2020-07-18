@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded overflow-hidden shadow-lg m-3 bg-white">
+  <div class="rounded shadow-lg m-3 bg-white my-4" :class="type=='todo' ? 'mb-8' : ''">
     <div class="p-4">
       <i class="handle opacity-25 hover:opacity-100" />
       <p
@@ -13,17 +13,6 @@
       <todo v-else-if="type=='todo'" :body="body" :cardId="cardId" />
       <bookmark v-else-if="type=='bookmark'" :body="body" :cardId="cardId" />
       <p v-else>Not a note</p>
-    </div>
-    <div class="px-6 pb-4 pt-1">
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-      >#photography</span>
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-      >#travel</span>
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
-      >#winter</span>
     </div>
   </div>
 </template>
