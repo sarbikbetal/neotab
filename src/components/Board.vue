@@ -1,8 +1,8 @@
 <template>
   <div class="md:flex mb-4">
-    <column v-for="(col, i) in cols" :key="col">
+    <column v-for="(col, i) in columns" :key="col">
       <draggable
-        v-model="arr[i]"
+        v-model="data[i]"
         group="columns"
         @start="drag=true"
         @end="drag=false"
@@ -12,8 +12,9 @@
       >
         <transition-group name="list" tag="div" class="h-full">
           <card
-            v-for="element in arr[i]"
+            v-for="element in data[i]"
             :key="element.id"
+            :cardId="element.id"
             :type="element.type"
             :title="element.title"
             :text="element.text"
@@ -32,6 +33,7 @@
 import draggable from "vuedraggable";
 import column from "@/components/Column";
 import card from "@/components/Card";
+import { mapState } from "vuex";
 
 export default {
   name: "board",
@@ -40,63 +42,18 @@ export default {
     column,
     card
   },
-  data: function() {
-    return {
-      arr: [
-        [
-          {
-            id: 1,
-            type: "todo",
-            title: "Zym",
-            body: [
-              { id: 1, text: "This is a todo", done: true },
-              { id: 2, text: "This is another todo", done: false }
-            ]
-          },
-          {
-            id: 2,
-            type: "bookmark",
-            title: "Zam",
-            body: [
-              { id: 1, title: "Duckduckgo", url: "https://duckduckgo.com" },
-              { id: 2, title: "Github", url: "https://dashboard.heroku.com/apps" }
-            ]
-          },
-          { id: 3, title: "Leka" },
-          { id: 4, title: "Lula" },
-          { id: 5, title: "Lalafazam" }
-        ],
-        [
-          { id: 6, type: "note", title: "Zamzar", text: "Hi I am a note!" },
-          { id: 7, type: "note", title: "Zazam", text: "And I am a lote!" },
-          {
-            id: 8,
-            type: "todo",
-            title: "Lerua",
-            body: [
-              { id: 3, text: "This is a todo", done: false },
-              { id: 4, text: "This is another todo", done: true }
-            ]
-          },
-          { id: 9, title: "Lu4la" },
-          { id: 10, title: "Lala5fazam" }
-        ]
-      ],
-      cols: [0, 1]
-    };
+  computed: {
+    ...mapState({
+      data: "cardData",
+      columns: "columns"
+    })
   },
   methods: {
     inc() {
-      if (this.cols.length < 5) {
-        this.cols.push(this.cols.length);
-        this.arr.push([]);
-      }
+      this.$store.commit("increaseCols");
     },
     dec() {
-      if (this.cols.length > 2) {
-        this.cols.pop();
-        this.arr.pop();
-      }
+      this.$store.commit("decreaseCols");
     }
   }
 };

@@ -1,12 +1,5 @@
 <template>
   <div>
-    <p
-      @keydown.enter="focusOut"
-      @dblclick="makeEditable"
-      @blur="updateTitle"
-      spellcheck="false"
-      class="title font-bold text-xl rounded-sm mr-8 px-1 text-gray-700 appearance-none focus:outline-none focus:bg-gray-200"
-    >{{titleData}}</p>
     <draggable
       v-model="links"
       group="links"
@@ -33,33 +26,20 @@ export default {
     draggable
   },
   props: {
-    title: String,
     body: Array
   },
   data: function() {
     return {
-      titleData: this.title,
       links: this.body
     };
   },
   methods: {
-    focusOut(e) {
-      e.target.blur();
-      this.removeEditable(e);
-    },
-    updateTitle(e) {
-      this.titleData = e.target.innerText;
-    },
-    makeEditable(e) {
-      e.target.contentEditable = true;
-      e.target.focus();
-    },
-    removeEditable(e) {
-      e.target.contentEditable = false;
-    },
     getFavicon(url) {
       let siteUrl = new URL(url);
-      return siteUrl.origin + "/favicon.ico";
+      return (
+        "https://s2.googleusercontent.com/s2/favicons?domain_url=" +
+        siteUrl.origin
+      );
     },
     loadDefault(e) {
       e.target.src = "./img/icons/public.svg";
@@ -69,10 +49,6 @@ export default {
 </script>
 
 <style>
-p.title {
-  transition: all 200ms ease-out;
-  text-decoration: none;
-}
 .link {
   @apply pl-1;
   @apply text-sm;
