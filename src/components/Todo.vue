@@ -13,8 +13,8 @@
           <i @click="markTodo($event, todo.id)" class="todo-handle opacity-25 hover:opacity-75" />
           <i @click="removeTodo($event, todo.id)" class="remove opacity-25 hover:opacity-100" />
           <p
-            @keydown.enter="addTodo"
-            @keydown.esc="blurOrRemove($event, todo.id)"
+            @keydown.enter="addTodo($event, true)"
+            @keydown.esc="setBlur"
             @keydown.delete="checkToRemove($event, todo.id)"
             @dblclick="makeEditable"
             @blur="updateTodo($event, todo.id)"
@@ -25,8 +25,8 @@
         </div>
       </transition-group>
     </draggable>
-    <fab class="mr-2 select-none" @click.native="addTodo">
-      <img src="/img/icons/add.svg" alt="add todo" />
+    <fab class="mr-2 focus:bg-gray-300" @click.native="addTodo">
+      <img src="/img/icons/add.svg" class="select-none" alt="add todo" />
     </fab>
   </div>
 </template>
@@ -45,24 +45,40 @@ export default {
     body: Array
   },
   computed: {
-    todoList() {
-      return this.body;
+    todoList: {
+      get() {
+        return this.body;
+      },
+      set(list) {
+        this.$store.commit("reorderTodo", {
+          id: this.cardId,
+          todoList: list
+        });
+      }
     }
   },
   methods: {
-    addTodo(e) {
+    addTodo(e, check) {
+      if (check && e.target.innerText.length == 0) {
+        e.preventDefault();
+        return;
+      }
       this.$store.commit("addTodo", {
         id: this.cardId
       });
       e.target.blur();
     },
     updateTodo(e, id) {
-      this.$store.commit("updateTodo", {
-        id: this.cardId,
-        todoId: id,
-        todo: e.target.innerText
-      });
-      this.removeEditable(e);
+      if (e.target.innerText.length == 0) {
+        this.removeTodo(e, id);
+      } else {
+        this.$store.commit("updateTodo", {
+          id: this.cardId,
+          todoId: id,
+          todo: e.target.innerText
+        });
+        this.removeEditable(e);
+      }
     },
     markTodo(e, id) {
       this.$store.commit("markTodo", {
@@ -79,15 +95,13 @@ export default {
     checkToRemove(e, id) {
       if (e.target.innerText.length == 0) {
         this.setFocus(e.target.parentElement.previousElementSibling);
-        this.$store.commit("removeTodo", {
-          id: this.cardId,
-          todoId: id
-        });
+        this.removeTodo(e, id);
+        return true;
       }
+      return false;
     },
-    blurOrRemove(e, id) {
+    setBlur(e) {
       e.target.blur();
-      this.checkToRemove(e, id);
     },
     makeEditable(e) {
       e.target.contentEditable = true;

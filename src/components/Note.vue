@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <p
-      @keydown.enter="focusOut"
-      @dblclick="makeEditable"
-      @blur="updateNote"
-      spellcheck="false"
-      class="note p-1 mt-1 rounded-sm focus:outline-none focus:bg-gray-200"
-    >{{body}}</p>
-  </div>
+  <textarea
+    @keydown.esc="focusOut"
+    @blur="updateNote"
+    spellcheck="false"
+    class="note p-1 mt-1 rounded-sm focus:outline-none focus:bg-gray-200 w-full"
+    role="textbox"
+    rows="4"
+    :value="noteData"
+  />
 </template>
 
 <script>
@@ -27,19 +27,11 @@ export default {
       e.target.blur();
     },
     updateNote(e) {
-      this.removeEditable(e);
       this.$store.commit("updateNote", {
         id: this.cardId,
-        note: e.target.innerText
+        note: e.target.value
       });
     },
-    makeEditable(e) {
-      e.target.contentEditable = true;
-      e.target.focus();
-    },
-    removeEditable(e) {
-      e.target.contentEditable = false;
-    }
   }
 };
 </script>
@@ -48,6 +40,9 @@ export default {
 .note {
   @apply text-gray-600;
   @apply text-base;
+  @apply break-all;
+  white-space: pre-line;
+  white-space: pre-wrap;
   min-height: 34px;
   appearance: none;
   border: solid #bebebe52 1px;

@@ -39,7 +39,7 @@ export default {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #a7a7a77c;
+  background: #a7a7a71e;
 }
 
 /* Handle */

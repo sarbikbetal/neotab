@@ -10,7 +10,7 @@ export default new Store({
                 {
                     id: 1,
                     type: "todo",
-                    title: "Zym",
+                    title: "Todo",
                     body: [
                         { id: 0, text: "This is a todo", done: true },
                         { id: 1, text: "This is another todo", done: false }
@@ -19,7 +19,7 @@ export default new Store({
                 {
                     id: 2,
                     type: "bookmark",
-                    title: "Zam",
+                    title: "Bookmarks",
                     body: [
                         { id: 1, title: "Duckduckgo", url: "https://duckduckgo.com" },
                         { id: 2, title: "Heroku", url: "https://dashboard.heroku.com/apps" }
@@ -27,7 +27,7 @@ export default new Store({
                 }
             ],
             [
-                { id: 7, type: "note", title: "Zazam", text: "And I am a lote!" },
+                { id: 7, type: "note", title: "Note", text: " " },
             ]
         ],
         counters: [9, 18],
@@ -123,5 +123,15 @@ export default new Store({
                 }
             }
         },
+        reorderTodo(state, { id, todoList }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    state.cardData[i][cardIndex].body = todoList;
+                    break;
+                }
+            }
+        }
     }
 })
