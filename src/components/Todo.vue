@@ -126,15 +126,18 @@ export default {
   @apply cursor-pointer;
   min-height: 24px;
 }
-.todo-enter-active {
+.todo-enter-active,
+.todo-leave-active {
   transition: all 0.3s;
 }
 .todo-enter {
   opacity: 0.1;
 }
-.todo-leave-to,
-.todo-leave {
+.todo-leave-to {
   opacity: 0;
+}
+.todo-leave {
+  opacity: 1;
 }
 .todo-move {
   transition: transform 0.2s;

@@ -46,6 +46,7 @@ export default new Store({
                 state.columns.pop();
             }
         },
+        // All cards
         updateTitle(state, { id, title }) {
             for (let i = 0; i < state.cardData.length; i++) {
                 const cards = state.cardData[i];
@@ -56,6 +57,7 @@ export default new Store({
                 }
             }
         },
+        // Notes
         updateNote(state, { id, note }) {
             for (let i = 0; i < state.cardData.length; i++) {
                 const cards = state.cardData[i];
@@ -66,6 +68,7 @@ export default new Store({
                 }
             }
         },
+        // Todos
         updateTodo(state, { id, todoId, todo }) {
             for (let i = 0; i < state.cardData.length; i++) {
                 const cards = state.cardData[i];
@@ -132,6 +135,54 @@ export default new Store({
                     break;
                 }
             }
-        }
-    }
+        },
+        // Bookmarks
+        addBookmark(state, { id, title, url }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    state.cardData[i][cardIndex].body.push(
+                        { id: state.counters[1]++, title, url }
+                    );
+                    break;
+                }
+            }
+        },
+        updateBookmark(state, { id, title, url, bkmId }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    const bkmList = state.cardData[i][cardIndex].body;
+                    let bkmIndex = bkmList.findIndex(bkm => bkm.id == bkmId);
+                    if (bkmIndex != -1) {
+                        state.cardData[i][cardIndex].body[bkmIndex] = { id: bkmId, title, url };
+                        break;
+                    }
+                }
+            }
+        },
+        deleteBookmark(state, { id, title, url, bkmId }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    const bkmList = state.cardData[i][cardIndex].body;
+                    let newList = bkmList.filter(bkm => bkm.id != bkmId);
+                    state.cardData[i][cardIndex].body = newList;
+                }
+            }
+        },
+        reorderBookmark(state, { id, bkmList }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    state.cardData[i][cardIndex].body = bkmList;
+                    break;
+                }
+            }
+        },
+    },
 })
