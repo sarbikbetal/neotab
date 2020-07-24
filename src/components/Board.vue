@@ -1,5 +1,5 @@
 <template>
-  <div class="md:flex mb-4">
+  <div class="md:flex mb-4 pt-16">
     <column v-for="(col, i) in columns" :key="col">
       <draggable
         v-model="data[i]"
@@ -23,9 +23,6 @@
         </transition-group>
       </draggable>
     </column>
-
-    <button @click="inc">Increase</button>
-    <button @click="dec">Decrease</button>
   </div>
 </template>
 
@@ -47,14 +44,6 @@ export default {
       data: "cardData",
       columns: "columns"
     })
-  },
-  methods: {
-    inc() {
-      this.$store.commit("increaseCols");
-    },
-    dec() {
-      this.$store.commit("decreaseCols");
-    }
   }
 };
 </script>

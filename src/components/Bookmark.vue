@@ -46,7 +46,7 @@
         <div class="bg"></div>
       </button>
     </div>
-    <div class="text-center h-6 pt-2">
+    <div class="text-center h-8 pt-3">
       <button
         @click="toggleForm"
         class="add-bookmark bg-gray-100 focus:outline-none focus:opacity-100 focus:bg-gray-300 hover:opacity-100 hover:shadow hover:bg-gray-200"

@@ -5,7 +5,7 @@
     spellcheck="false"
     class="note p-1 mt-1 rounded-sm focus:outline-none focus:bg-gray-200 w-full"
     role="textbox"
-    rows="4"
+    rows="5"
     :value="noteData"
   />
 </template>
