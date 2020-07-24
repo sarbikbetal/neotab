@@ -18,12 +18,7 @@
       </button>
     </div>
     <searchBar />
-    <button
-      class="widget-btn flex items-center justify-center ripple hover:bg-gray-200 focus:outline-none focus:bg-gray-200 px-3 py-2"
-    >
-      <img class="inline" src="/img/icons/add.svg" alt />
-      <span class="text-base">Widget</span>
-    </button>
+    <span class="text-2xl hidden md:inline">NeoTab</span>
 
     <transition
       enter-class="opacity-0"
@@ -148,18 +143,6 @@ export default {
   @apply mx-2;
   @apply rounded-full;
   @apply bg-gray-300;
-}
-
-.widget-btn {
-  @apply bg-gray-100;
-  @apply transition-all;
-  @apply duration-300;
-  @apply rounded-full;
-  @apply shadow-lg;
-  @apply absolute;
-  width: 7rem;
-  top: 85vh;
-  right: 5vw;
 }
 
 @screen md {

@@ -23,6 +23,7 @@
         </transition-group>
       </draggable>
     </column>
+    <speedDial/>
   </div>
 </template>
 
@@ -30,6 +31,7 @@
 import draggable from "vuedraggable";
 import column from "@/components/Column";
 import card from "@/components/Card";
+import speedDial from "@/components/SpeedDial";
 import { mapState } from "vuex";
 
 export default {
@@ -37,7 +39,8 @@ export default {
   components: {
     draggable,
     column,
-    card
+    card,
+    speedDial
   },
   computed: {
     ...mapState({

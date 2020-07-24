@@ -8,10 +8,12 @@ Your start page to productivity
 
 ### Upcoming features
 - [] More cards
-- [] Dark themes (yeah, multiple)
+- [] Dark themes* (yeah, multiple)
+- [] Color customizations
 - [] Archive
 - [] Kanban
 
+*Till then your eyes will bleed, sorry but bear with me.
 
 ## Project setup
 ```

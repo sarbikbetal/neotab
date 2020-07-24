@@ -26,11 +26,11 @@ export default {
   transition: box-shadow 0.3s;
 }
 .ripple:hover {
-  background: #e2e8f0 radial-gradient(circle, transparent 1%, #cbd5e0 1%)
+  background: #0000001f radial-gradient(circle, transparent 1%, #0000001f 1%)
     center/15000%;
 }
 .ripple:active {
-  background-color: #fdfdfd21;
+  background-color: #0000001f;
   background-size: 100%;
   transition: background 0s;
 }
