@@ -20,7 +20,7 @@
             @blur="updateTodo($event, todo.id)"
             spellcheck="false"
             :class="todo.done ? 'line-through' : 'no-underline'"
-            class="todo px-5 focus:outline-none focus:bg-gray-200 focus:cursor-text"
+            class="todo focus:outline-none focus:bg-gray-200 focus:cursor-text"
           >{{todo.text}}</p>
         </div>
       </transition-group>
@@ -124,6 +124,7 @@ export default {
   @apply rounded-sm;
   @apply break-all;
   @apply cursor-pointer;
+  padding: 2px 1.25rem;
   min-height: 24px;
 }
 .todo-enter-active,
@@ -145,7 +146,7 @@ export default {
 .todo-handle {
   float: left;
   cursor: pointer;
-  margin: 4px 0;
+  margin: 6px 0;
   height: 16px;
   width: 16px;
   background: no-repeat url("/img/icons/drag_indicator.svg");
@@ -158,7 +159,7 @@ export default {
 .remove {
   float: right;
   cursor: pointer;
-  margin: 4px;
+  margin: 6px 4px;
   height: 16px;
   width: 16px;
   background: no-repeat url("/img/icons/remove.svg");

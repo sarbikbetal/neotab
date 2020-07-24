@@ -197,7 +197,7 @@ export default {
   @apply bg-gray-100;
   @apply rounded;
   @apply w-full;
-  @apply py-0;
+  @apply py-1;
   @apply px-2;
   @apply text-gray-700;
   @apply leading-tight;

@@ -1,4 +1,17 @@
-# neotab
+# NeoTab
+Your start page to productivity
+
+### Work in progress
+- Navbar
+- Nav drawer
+- Nav rails for desktop
+
+### Upcoming features
+- [] More cards
+- [] Dark themes (yeah, multiple)
+- [] Archive
+- [] Kanban
+
 
 ## Project setup
 ```
@@ -15,7 +28,4 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-Icons made by [Good Ware](https://www.flaticon.com/authors/good-ware) from [www.flaticon.com](https://www.flaticon.com/)
+Favicon made by [Good Ware](https://www.flaticon.com/authors/good-ware) from [www.flaticon.com](https://www.flaticon.com/)

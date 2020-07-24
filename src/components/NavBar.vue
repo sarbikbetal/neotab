@@ -18,10 +18,12 @@
       </button>
     </div>
     <searchBar />
-    <div class="hidden md:block">
-      <button class="col-btn focus:outline-none" @click="inc">+</button>
-      <button class="col-btn focus:outline-none" @click="dec">-</button>
-    </div>
+    <button
+      class="widget-btn flex items-center justify-center ripple hover:bg-gray-200 focus:outline-none focus:bg-gray-200 px-3 py-2"
+    >
+      <img class="inline" src="/img/icons/add.svg" alt />
+      <span class="text-base">Widget</span>
+    </button>
 
     <transition
       enter-class="opacity-0"
@@ -40,7 +42,7 @@
       </div>
     </transition>
     <aside
-      class="transform top-0 left-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
+      class="flex flex-col transform top-0 left-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
       :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <span @click="isOpen = false" class="flex w-full items-center p-4 border-b">
@@ -66,6 +68,32 @@
           </svg>
         </span>
         <span>Home</span>
+      </span>
+      <div class="flex-1"></div>
+      <div class="hidden md:flex items-center justify-around my-3">
+        <button
+          class="col-btn ripple hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
+          @click="dec"
+        >-</button>
+        <span>{{this.$store.state.columns.length}} Columns</span>
+        <button
+          class="col-btn ripple hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
+          @click="inc"
+        >+</button>
+      </div>
+      <span
+        @click="isOpen = false"
+        class="flex items-center p-4 hover:bg-indigo-500 hover:text-white"
+      >
+        <span class="mr-2">
+          <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+            <path
+              xmlns="http://www.w3.org/2000/svg"
+              d="M12,2A10,10,0,1,0,22,12,10.01114,10.01114,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8.00917,8.00917,0,0,1,12,20Zm0-8.5a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0v-3A1,1,0,0,0,12,11.5Zm0-4a1.25,1.25,0,1,0,1.25,1.25A1.25,1.25,0,0,0,12,7.5Z"
+            />
+          </svg>
+        </span>
+        <span>About</span>
       </span>
     </aside>
   </nav>
@@ -120,5 +148,24 @@ export default {
   @apply mx-2;
   @apply rounded-full;
   @apply bg-gray-300;
+}
+
+.widget-btn {
+  @apply bg-gray-100;
+  @apply transition-all;
+  @apply duration-300;
+  @apply rounded-full;
+  @apply shadow-lg;
+  @apply absolute;
+  width: 7rem;
+  top: 85vh;
+  right: 5vw;
+}
+
+@screen md {
+  .widget-btn {
+    @apply static;
+    @apply shadow-none;
+  }
 }
 </style>

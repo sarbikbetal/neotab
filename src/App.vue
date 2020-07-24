@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <newtab msg="hello" />
+    <newtab />
   </div>
 </template>
 

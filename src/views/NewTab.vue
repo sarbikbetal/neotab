@@ -1,18 +1,18 @@
 <template>
   <div>
-    <navbar />
+    <navigation />
     <board />
   </div>
 </template>
 
 <script>
-import navbar from "@/components/NavBar";
+import navigation from "@/components/NavBar";
 import board from "@/components/Board";
 
 export default {
   name: "newtab",
   components: {
-    navbar,
+    navigation,
     board
   }
 };
