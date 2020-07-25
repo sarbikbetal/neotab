@@ -21,17 +21,18 @@ export default new Store({
                     type: "bookmark",
                     title: "Bookmarks",
                     body: [
-                        { id: 1, title: "Duckduckgo", url: "https://duckduckgo.com" },
-                        { id: 2, title: "Heroku", url: "https://dashboard.heroku.com/apps" }
+                        { id: 1, title: "Github", url: "https://github.com" },
+                        { id: 2, title: "Dev Community", url: "https://dev.to" }
                     ]
                 }
             ],
             [
-                { id: 7, type: "note", title: "Note", text: " " },
-            ]
+                { id: 3, type: "note", title: "Note", text: " " },
+            ],
+            []
         ],
-        counters: [9, 18],
-        columns: [0, 1]
+        counters: [4, 8],
+        columns: [0, 1, 2]
     },
     mutations: {
         increaseCols(state) {
@@ -56,6 +57,25 @@ export default new Store({
                     break;
                 }
             }
+        },
+        addNoteCard(state) {
+            state.cardData[0].unshift({ id: state.counters[0]++, type: "note", title: "Note", text: " " })
+        },
+        addTodoCard(state) {
+            state.cardData[0].unshift({
+                id: state.counters[0]++,
+                type: "todo",
+                title: "Todo",
+                body: []
+            })
+        },
+        addBookmarkCard(state) {
+            state.cardData[0].unshift({
+                id: state.counters[0]++,
+                type: "bookmark",
+                title: "Bookmarks",
+                body: []
+            })
         },
         // Notes
         updateNote(state, { id, note }) {

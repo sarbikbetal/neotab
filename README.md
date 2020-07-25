@@ -7,6 +7,7 @@ Your start page to productivity
 - Nav rails for desktop
 
 ### Upcoming features
+- [] Bookmarks bar
 - [] More cards
 - [] Dark themes* (yeah, multiple)
 - [] Color customizations

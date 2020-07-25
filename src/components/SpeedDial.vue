@@ -28,7 +28,7 @@
     </button>
 
     <button
-      @click="toggleSD"
+      @click="addNoteCard"
       type="button"
       class="flex md-button md-ripple justify-between text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
       style="padding: 8px 20px 8px 12px;"
@@ -43,7 +43,7 @@
       <span class="pl-1 text-base">Note</span>
     </button>
     <button
-      @click="toggleSD"
+      @click="addTodoCard"
       type="button"
       class="flex md-button md-ripple justify-between text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
       style="padding: 8px 20px 8px 12px;"
@@ -58,7 +58,7 @@
       <span class="pl-1 text-base">Todo</span>
     </button>
     <button
-      @click="toggleSD"
+      @click="addBookmarkCard"
       type="button"
       class="flex md-button md-ripple justify-between text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
       style="padding: 8px 20px 8px 12px;"
@@ -86,6 +86,18 @@ export default {
   methods: {
     toggleSD(e) {
       this.open = !this.open;
+    },
+    addNoteCard() {
+      this.$store.commit("addNoteCard");
+      this.toggleSD();
+    },
+    addTodoCard() {
+      this.$store.commit("addTodoCard");
+      this.toggleSD();
+    },
+    addBookmarkCard() {
+      this.$store.commit("addBookmarkCard");
+      this.toggleSD();
     },
   },
 };
