@@ -77,6 +77,17 @@ export default new Store({
                 body: []
             })
         },
+        deleteCard(state, { id }) {
+            for (let i = 0; i < state.cardData.length; i++) {
+                const cards = state.cardData[i];
+                let cardIndex = cards.findIndex(card => card.id == id);
+                if (cardIndex != -1) {
+                    let newCardList = cards.filter(card => card.id != id);
+                    state.cardData[i] = newCardList;
+                    break;
+                }
+            }
+        },
         // Notes
         updateNote(state, { id, note }) {
             for (let i = 0; i < state.cardData.length; i++) {

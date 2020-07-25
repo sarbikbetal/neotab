@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div @contextmenu="$event.preventDefault()" id="app">
     <newtab />
   </div>
 </template>
@@ -10,11 +10,11 @@ import newtab from "@/views/NewTab.vue";
 export default {
   name: "App",
   components: {
-    newtab
+    newtab,
   },
-  mounted: function() {
+  mounted: function () {
     console.log("Paste filter registered");
-    document.querySelector("#app").addEventListener("paste", function(e) {
+    document.querySelector("#app").addEventListener("paste", function (e) {
       e.preventDefault();
       if (e.clipboardData && e.clipboardData.getData) {
         var text = e.clipboardData.getData("text/plain");
@@ -24,7 +24,7 @@ export default {
         insertTextAtCursor(text);
       }
     });
-  }
+  },
 };
 </script>
 

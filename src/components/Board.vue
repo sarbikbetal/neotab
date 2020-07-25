@@ -1,15 +1,16 @@
 <template>
-  <div class="md:flex mb-4 pt-16">
+  <div @contextmenu="showMenu" @click="hideMenu" class="md:flex mb-4 pt-16">
     <column v-for="(col, i) in columns" :key="col">
       <draggable
         v-model="data[i]"
         group="columns"
         @start="drag=true"
         @end="drag=false"
+        class="h-full"
         ghost-class="card-ghost"
         handle=".handle"
       >
-        <transition-group name="list" tag="div">
+        <transition-group name="list" tag="div" class="h-full">
           <card
             v-for="element in data[i]"
             :key="element.id"
@@ -18,10 +19,12 @@
             :title="element.title"
             :text="element.text"
             :body="element.body"
+            :card="element.id"
           />
         </transition-group>
       </draggable>
     </column>
+    <contextMenu :show="menuVisible" :cardId="focusedCard" />
   </div>
 </template>
 
@@ -29,6 +32,7 @@
 import draggable from "vuedraggable";
 import column from "@/components/Column";
 import card from "@/components/Card";
+import contextMenu from "@/components/ContextMenu";
 import { mapState } from "vuex";
 
 export default {
@@ -37,12 +41,70 @@ export default {
     draggable,
     column,
     card,
+    contextMenu,
+  },
+  data: function () {
+    return {
+      menuVisible: false,
+      focusedCard: undefined,
+    };
   },
   computed: {
     ...mapState({
       data: "cardData",
       columns: "columns",
     }),
+  },
+  methods: {
+    showMenu(e) {
+      e.preventDefault();
+      const origin = {
+        left: e.pageX,
+        top: e.pageY,
+      };
+
+      let levels = 3;
+      let target = e.target;
+      this.focusedCard = undefined;
+      while (levels--) {
+        if (target.hasAttribute("card")) {
+          this.focusedCard = parseInt(target.getAttribute("card"));
+          break;
+        } else target = target.parentElement;
+      }
+
+      this.setPosition(origin);
+      let text = this.copyText();
+      console.log(text);
+    },
+    setPosition({ top, left }) {
+      const menu = document.querySelector(".menu");
+      menu.style.left = `${left}px`;
+      menu.style.top = `${top}px`;
+      this.menuVisible = true;
+    },
+    hideMenu() {
+      this.menuVisible = false;
+    },
+    copyText() {
+      let text = "";
+      let activeEl = document.activeElement;
+      let activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+      if (
+        activeElTagName == "textarea" ||
+        (activeElTagName == "input" &&
+          /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
+          typeof activeEl.selectionStart == "number")
+      ) {
+        text = activeEl.value.slice(
+          activeEl.selectionStart,
+          activeEl.selectionEnd
+        );
+      } else if (window.getSelection) {
+        text = window.getSelection().toString();
+      }
+      return text;
+    },
   },
 };
 </script>
