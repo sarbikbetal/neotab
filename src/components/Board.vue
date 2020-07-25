@@ -6,11 +6,10 @@
         group="columns"
         @start="drag=true"
         @end="drag=false"
-        class="h-full"
         ghost-class="card-ghost"
         handle=".handle"
       >
-        <transition-group name="list" tag="div" class="h-full">
+        <transition-group name="list" tag="div">
           <card
             v-for="element in data[i]"
             :key="element.id"
@@ -23,7 +22,6 @@
         </transition-group>
       </draggable>
     </column>
-    <speedDial/>
   </div>
 </template>
 
@@ -31,7 +29,6 @@
 import draggable from "vuedraggable";
 import column from "@/components/Column";
 import card from "@/components/Card";
-import speedDial from "@/components/SpeedDial";
 import { mapState } from "vuex";
 
 export default {
@@ -40,14 +37,13 @@ export default {
     draggable,
     column,
     card,
-    speedDial
   },
   computed: {
     ...mapState({
       data: "cardData",
-      columns: "columns"
-    })
-  }
+      columns: "columns",
+    }),
+  },
 };
 </script>
 

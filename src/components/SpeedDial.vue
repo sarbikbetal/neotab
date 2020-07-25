@@ -143,7 +143,7 @@ button {
 .md-fab.md-fab-bottom-right,
 .md-speed-dial.md-fab-bottom-right {
   right: 24px;
-  bottom: 24px;
+  top: calc(100vh - 240px);
 }
 
 .md-speed-dial {
