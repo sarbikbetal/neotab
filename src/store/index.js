@@ -1,6 +1,13 @@
 import Vuex, { Store } from 'vuex';
 import Vue from 'vue';
 
+const saveStateLocal = store => {
+    store.subscribe((mutation, state) => {
+        const stateString = JSON.stringify(state);
+        window.localStorage.setItem('app-state', stateString);
+    });
+}
+
 Vue.use(Vuex);
 
 export default new Store({
@@ -35,6 +42,13 @@ export default new Store({
         columns: [0, 1, 2]
     },
     mutations: {
+        //Overwrite app state
+        initialiseStore(state, savedState) {
+            console.log("Restoring saved state");
+            this.replaceState(Object.assign(state, savedState));
+            state = savedState;
+        },
+        // Columns
         increaseCols(state) {
             if (state.columns.length < 5)
                 state.columns.push(state.columns.length);
@@ -221,4 +235,5 @@ export default new Store({
             }
         },
     },
+    plugins: [saveStateLocal]
 })
