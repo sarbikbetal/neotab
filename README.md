@@ -6,13 +6,16 @@ Your start page to productivity
 - Nav drawer
 - Nav rails for desktop
 
-### Upcoming features
-- [] Bookmarks bar
-- [] More cards
-- [] Dark themes* (yeah, multiple)
-- [] Color customizations
-- [] Archive
-- [] Kanban
+### Features
+- [x] Sticky notes
+- [x] Todo lists
+- [x] Favourite links
+- [ ] Bookmarks bar
+- [ ] More cards
+- [ ] Dark themes* (yeah, multiple)
+- [ ] Color customizations
+- [ ] Archive
+- [ ] Kanban
 
 *Till then your eyes will bleed, sorry but bear with me.
 

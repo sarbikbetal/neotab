@@ -28,12 +28,12 @@ export default {
     type: String,
     title: String,
     text: String,
-    body: Array
+    body: Array,
   },
   components: {
     note,
     todo,
-    bookmark
+    bookmark,
   },
   methods: {
     focusOut(e) {
@@ -43,7 +43,7 @@ export default {
       this.removeEditable(e);
       this.$store.commit("updateTitle", {
         id: this.cardId,
-        title: e.target.innerText
+        title: e.target.innerText,
       });
     },
     makeEditable(e) {
@@ -53,7 +53,7 @@ export default {
     removeEditable(e) {
       e.target.contentEditable = false;
     }
-  }
+  },
 };
 </script>
 

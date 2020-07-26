@@ -1,15 +1,19 @@
 <template>
-  <div class="flex-1 flex-shrink-1 bg-gray-100 m-2 py-2">
-    <slot/>
+  <div class="expanded flex-1 flex-shrink-1 bg-gray-100 m-2 py-2">
+    <slot />
   </div>
 </template>
 
 <script>
 export default {
-    name: 'column'
-}
+  name: "column",
+};
 </script>
 
 <style>
-
+@screen md {
+  .expanded {
+    min-height: calc(100vh - 96px);
+  }
+}
 </style>

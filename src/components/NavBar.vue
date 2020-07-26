@@ -19,6 +19,7 @@
     </div>
     <searchBar />
     <span class="text-2xl hidden md:inline">NeoTab</span>
+    <speedDial />
 
     <transition
       enter-class="opacity-0"
@@ -96,10 +97,12 @@
 
 <script>
 import searchBar from "@/components/SearchBar";
+import speedDial from "@/components/SpeedDial";
 export default {
   name: "navbar",
   components: {
     searchBar,
+    speedDial,
   },
   data() {
     return {
@@ -143,12 +146,5 @@ export default {
   @apply mx-2;
   @apply rounded-full;
   @apply bg-gray-300;
-}
-
-@screen md {
-  .widget-btn {
-    @apply static;
-    @apply shadow-none;
-  }
 }
 </style>
