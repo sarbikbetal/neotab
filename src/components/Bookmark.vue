@@ -93,9 +93,7 @@ export default {
       try {
         siteUrl = new URL(url).origin;
       } catch (error) {
-        console.log(url);
         siteUrl = "https://" + (url.split("/")[0] || url);
-        console.log(siteUrl);
       }
       return siteUrl + "/favicon.ico";
     },
