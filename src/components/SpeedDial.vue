@@ -1,18 +1,18 @@
 <template>
   <div
     :class="open ? 'md-active' : ''"
-    class="md-speed-dial md-fab-bottom-right md-theme-default md-mode-scale md-direction-top"
+    class="md-speed-dial h-screen md-fab-bottom-right md-theme-default md-mode-scale md-direction-top"
   >
     <button
       @click="toggleSD"
       type="button"
-      class="flex items-center justify-between md-ripple text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
+      class="flex md-button items-center justify-between md-ripple text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
       style="padding: 8px 20px 8px 12px;"
       md-fab-trigger
     >
       <svg
         :class="open ? 'cross' : ''"
-        class="inline sd-btn"
+        class="inline sd-icon"
         height="24"
         viewBox="0 0 24 24"
         width="24"
@@ -107,7 +107,7 @@ export default {
 .cross {
   transform: rotate(45deg) scale(1.2);
 }
-.sd-btn {
+.sd-icon {
   transition: all 200ms;
 }
 
@@ -115,6 +115,7 @@ button {
   display: block;
   width: 100%;
   transition: width 300ms;
+  @apply shadow-lg;
   @apply rounded-full;
 }
 
@@ -143,7 +144,15 @@ button {
 .md-fab.md-fab-bottom-right,
 .md-speed-dial.md-fab-bottom-right {
   right: 24px;
-  top: calc(100vh - 240px);
+  top: -4rem;
+}
+
+@screen lg {
+  .md-fab.md-fab-bottom-right,
+  .md-speed-dial.md-fab-bottom-right {
+    right: 2rem;
+    top: -2rem;
+  }
 }
 
 .md-speed-dial {

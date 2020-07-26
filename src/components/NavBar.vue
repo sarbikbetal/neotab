@@ -77,6 +77,7 @@
           @click="inc"
         >+</button>
       </div>
+      <speedDial />
       <span
         @click="isOpen = false"
         class="flex items-center p-4 hover:bg-indigo-500 hover:text-white"
@@ -146,12 +147,5 @@ export default {
   @apply mx-2;
   @apply rounded-full;
   @apply bg-gray-300;
-}
-
-@screen md {
-  .widget-btn {
-    @apply static;
-    @apply shadow-none;
-  }
 }
 </style>

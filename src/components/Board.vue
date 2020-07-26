@@ -25,7 +25,7 @@
         </transition-group>
       </draggable>
     </column>
-    <contextMenu :show="menuVisible" :cardId="focusedCard" />
+    <contextMenu :show="menuVisible" :cardId="focusedCard" :text="selectedText" />
   </div>
 </template>
 
@@ -48,6 +48,7 @@ export default {
     return {
       menuVisible: false,
       focusedCard: undefined,
+      selectedText: undefined,
     };
   },
   computed: {
@@ -78,13 +79,32 @@ export default {
       }
 
       this.setPosition(origin);
-      let text = this.copyText();
-      console.log(text);
+      this.selectedText = this.copyText();
+      console.log(this.selectedText);
     },
     setPosition({ top, left }) {
       const menu = document.querySelector(".menu");
-      menu.style.left = `${left}px`;
-      menu.style.top = `${top}px`;
+      // menu.style.left = `${left}px`;
+      // menu.style.top = `${top}px`;
+
+      let menuWidth = menu.offsetWidth + 4;
+      let menuHeight = menu.offsetHeight + 4;
+
+      let windowWidth = window.innerWidth;
+      let windowHeight = window.innerHeight;
+
+      if (windowWidth - left < menuWidth) {
+        menu.style.left = windowWidth - menuWidth + "px";
+      } else {
+        menu.style.left = left + "px";
+      }
+
+      if (windowHeight - top < menuHeight) {
+        menu.style.top = windowHeight - menuHeight + "px";
+      } else {
+        menu.style.top = top + "px";
+      }
+
       this.menuVisible = true;
     },
     hideMenu() {

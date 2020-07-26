@@ -1,10 +1,7 @@
 <template>
   <div class="menu" :class="show? 'show-menu':''">
     <ul class="menu-options">
-      <li class="menu-option">Cut</li>
-      <li class="menu-option">Copy</li>
-      <li class="menu-option">Paste</li>
-      <li class="menu-option">Select all</li>
+      <li @click="copy" class="menu-option" :class="text ? '': 'menu-disabled'">Copy</li>
       <li class="divider"></li>
       <li @click="deleteCard" class="menu-option" :class="cardId ? '': 'menu-disabled'">Delete</li>
     </ul>
@@ -17,12 +14,16 @@ export default {
   props: {
     show: Boolean,
     cardId: Number,
+    text: String,
   },
   methods: {
     deleteCard() {
       this.$store.commit("deleteCard", {
         id: this.cardId,
       });
+    },
+    copy() {
+      navigator.clipboard.writeText(this.text);
     },
   },
 };
