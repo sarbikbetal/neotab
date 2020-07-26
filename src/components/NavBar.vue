@@ -77,7 +77,6 @@
           @click="inc"
         >+</button>
       </div>
-      <speedDial />
       <span
         @click="isOpen = false"
         class="flex items-center p-4 hover:bg-indigo-500 hover:text-white"
