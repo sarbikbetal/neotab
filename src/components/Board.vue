@@ -3,6 +3,7 @@
     <column v-for="(col, i) in columns" :key="col">
       <draggable
         v-model="data[i]"
+        @input="reorderTodo($event, i)"
         group="columns"
         @start="drag=true"
         @end="drag=false"
@@ -56,6 +57,9 @@ export default {
     }),
   },
   methods: {
+    reorderTodo(list, col) {
+      this.$store.commit("reorderCards", { list, col });
+    },
     showMenu(e) {
       e.preventDefault();
       const origin = {

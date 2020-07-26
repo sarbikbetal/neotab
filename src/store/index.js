@@ -77,6 +77,11 @@ export default new Store({
                 body: []
             })
         },
+        reorderCards(state, { list, col }) {
+            let newData = state.cardData;
+            newData[col] = list;
+            state.cardData = newData;
+        },
         deleteCard(state, { id }) {
             for (let i = 0; i < state.cardData.length; i++) {
                 const cards = state.cardData[i];
