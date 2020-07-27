@@ -1,7 +1,7 @@
 <template>
   <div
     :class="open ? 'md-active' : ''"
-    class="md-speed-dial h-screen md-fab-bottom-right md-theme-default md-mode-scale md-direction-top"
+    class="md-speed-dial md-fab-bottom-right md-theme-default md-mode-scale md-direction-top"
   >
     <button
       @click="toggleSD"
@@ -113,6 +113,7 @@ export default {
 
 button {
   display: block;
+  min-height: 3rem;
   width: 100%;
   transition: width 300ms;
   @apply shadow-lg;
@@ -137,22 +138,8 @@ button {
 .md-fab.md-fab-bottom-right,
 .md-speed-dial.md-fab-bottom-right {
   margin: 0;
-  position: absolute;
+  height: 3rem;
   z-index: 4;
-}
-
-.md-fab.md-fab-bottom-right,
-.md-speed-dial.md-fab-bottom-right {
-  right: 24px;
-  top: -4rem;
-}
-
-@screen lg {
-  .md-fab.md-fab-bottom-right,
-  .md-speed-dial.md-fab-bottom-right {
-    right: 2rem;
-    top: -2rem;
-  }
 }
 
 .md-speed-dial {

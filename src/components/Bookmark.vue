@@ -5,13 +5,17 @@
       group="links"
       @start="drag=true"
       @end="drag=false"
-      handle=".favicon"
       ghost-class="link-ghost"
     >
       <transition-group name="link" tag="div">
-        <div @dblclick="editBookmark($event, link)" v-for="link in links" :key="link.id">
+        <div
+          @dblclick="editBookmark($event, link)"
+          v-for="link in links"
+          :key="link.id"
+          style="cursor: grab;"
+        >
           <img
-            class="favicon ml-1"
+            class="favicon ml-1 select-none"
             :src="getFavicon(link.url)"
             @error="loadDefault($event, link.url)"
           />
@@ -60,18 +64,18 @@ import draggable from "vuedraggable";
 export default {
   name: "bookmark",
   components: {
-    draggable
+    draggable,
   },
   props: {
     cardId: Number,
-    body: Array
+    body: Array,
   },
-  data: function() {
+  data: function () {
     return {
       editing: false,
       bkmTitle: "",
       bkmURL: "",
-      bkmId: undefined
+      bkmId: undefined,
     };
   },
   computed: {
@@ -82,10 +86,10 @@ export default {
       set(list) {
         this.$store.commit("reorderBookmark", {
           id: this.cardId,
-          bkmList: list
+          bkmList: list,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     getFavicon(url) {
@@ -126,14 +130,14 @@ export default {
             id: this.cardId,
             bkmId: this.bkmId,
             title,
-            url: siteUrl
+            url: siteUrl,
           });
           this.bkmId = undefined;
         } else
           this.$store.commit("addBookmark", {
             id: this.cardId,
             title,
-            url: siteUrl
+            url: siteUrl,
           });
       }
     },
@@ -147,14 +151,14 @@ export default {
     deleteBookmark(e) {
       this.$store.commit("deleteBookmark", {
         id: this.cardId,
-        bkmId: this.bkmId
+        bkmId: this.bkmId,
       });
       this.bkmTitle = "";
       this.bkmURL = "";
       this.bkmId = undefined;
       this.editing = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -234,7 +238,6 @@ export default {
 
 .favicon {
   float: left;
-  cursor: move;
   margin: 4px 0;
   height: 16px;
   width: 16px;

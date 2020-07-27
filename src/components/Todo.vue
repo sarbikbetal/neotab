@@ -10,7 +10,7 @@
     >
       <transition-group name="todo" tag="div" @after-enter="setFocus">
         <div v-for="todo in todoList" :key="todo.id">
-          <i @click="markTodo($event, todo.id)" class="todo-handle opacity-25 hover:opacity-75" />
+          <div @click="markTodo($event, todo.id)" class="todo-handle opacity-25 hover:opacity-75 select-none" />
           <i @click="removeTodo($event, todo.id)" class="remove opacity-25 hover:opacity-100" />
           <p
             @keydown.enter="addTodo($event, true)"
@@ -19,14 +19,14 @@
             @dblclick="makeEditable"
             @blur="updateTodo($event, todo.id)"
             spellcheck="false"
-            :class="todo.done ? 'line-through' : 'no-underline'"
+            :class="todo.done ? 'line-through text-gray-600' : 'no-underline'"
             class="todo focus:outline-none focus:bg-gray-200 focus:cursor-text"
           >{{todo.text}}</p>
         </div>
       </transition-group>
     </draggable>
     <fab class="mr-2 focus:bg-gray-300" @click.native="addTodo">
-      <img src="/img/icons/add.svg" class="select-none" alt="add todo" />
+      <div class="add-todo-btn select-none" />
     </fab>
   </div>
 </template>
@@ -38,11 +38,11 @@ export default {
   name: "todo",
   components: {
     draggable,
-    fab
+    fab,
   },
   props: {
     cardId: Number,
-    body: Array
+    body: Array,
   },
   computed: {
     todoList: {
@@ -52,10 +52,10 @@ export default {
       set(list) {
         this.$store.commit("reorderTodo", {
           id: this.cardId,
-          todoList: list
+          todoList: list,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     addTodo(e, check) {
@@ -64,7 +64,7 @@ export default {
         return;
       }
       this.$store.commit("addTodo", {
-        id: this.cardId
+        id: this.cardId,
       });
       e.target.blur();
     },
@@ -75,7 +75,7 @@ export default {
         this.$store.commit("updateTodo", {
           id: this.cardId,
           todoId: id,
-          todo: e.target.innerText
+          todo: e.target.innerText,
         });
         this.removeEditable(e);
       }
@@ -83,13 +83,13 @@ export default {
     markTodo(e, id) {
       this.$store.commit("markTodo", {
         id: this.cardId,
-        todoId: id
+        todoId: id,
       });
     },
     removeTodo(e, id) {
       this.$store.commit("removeTodo", {
         id: this.cardId,
-        todoId: id
+        todoId: id,
       });
     },
     checkToRemove(e, id) {
@@ -114,18 +114,25 @@ export default {
       let todo = el.lastChild;
       todo.contentEditable = true;
       todo.focus();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style>
+.add-todo-btn {
+  height: 24px;
+  width: 24px;
+  background: no-repeat url("/img/icons/add.svg");
+  background-size: 24px 24px;
+}
 .todo {
   @apply rounded-sm;
   @apply break-all;
-  @apply cursor-pointer;
+  @apply text-gray-800;
   padding: 2px 1.25rem;
   min-height: 24px;
+  transition: all 300ms;
 }
 .todo-enter-active,
 .todo-leave-active {
