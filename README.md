@@ -2,9 +2,8 @@
 Your start page to productivity
 
 ### Work in progress
-- Navbar
-- Nav drawer
 - Nav rails for desktop
+- Bookmarks bar
 
 ### Features
 - [x] Sticky notes

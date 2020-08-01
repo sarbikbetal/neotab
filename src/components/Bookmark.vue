@@ -1,25 +1,32 @@
 <template>
-  <div>
+  <div class="pt-2">
     <draggable
       v-model="links"
       group="links"
       @start="drag=true"
       @end="drag=false"
       ghost-class="link-ghost"
+      handle=".favicon"
     >
       <transition-group name="link" tag="div">
         <div
+          class="flex items-center"
           @dblclick="editBookmark($event, link)"
           v-for="link in links"
           :key="link.id"
-          style="cursor: grab;"
         >
           <img
-            class="favicon ml-1 select-none"
+            class="favicon ml-1 select-none inline"
             :src="getFavicon(link.url)"
             @error="loadDefault($event, link.url)"
           />
-          <a class="link hover:underline" :href="link.url">{{link.title}}</a>
+          <div class="flex-1 pl-2">
+            <a
+              @contextmenu="$event.stopPropagation()"
+              class="link hover:underline"
+              :href="link.url"
+            >{{link.title}}</a>
+          </div>
         </div>
       </transition-group>
     </draggable>
@@ -142,6 +149,7 @@ export default {
       }
     },
     editBookmark(e, link) {
+      e.stopPropagation();
       this.bkmTitle = link.title;
       this.bkmURL = link.url;
       this.bkmId = link.id;
@@ -199,6 +207,7 @@ export default {
   @apply bg-gray-100;
   @apply rounded;
   @apply w-full;
+  @apply min-w-0;
   @apply py-1;
   @apply px-2;
   @apply text-gray-700;
@@ -212,7 +221,7 @@ export default {
 }
 .link {
   @apply pl-1;
-  @apply text-sm;
+  @apply text-base;
   @apply text-teal-700;
 }
 .link-enter-active,
@@ -237,10 +246,8 @@ export default {
 }
 
 .favicon {
-  float: left;
   margin: 4px 0;
-  height: 16px;
-  width: 16px;
-  display: inline;
+  height: 20px;
+  width: 20px;
 }
 </style>

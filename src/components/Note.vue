@@ -2,6 +2,7 @@
   <textarea
     @keydown.esc="focusOut"
     @blur="updateNote"
+    @contextmenu="$event.stopPropagation()"
     spellcheck="false"
     class="note p-1 mt-1 rounded-sm focus:outline-none focus:bg-gray-200 w-full"
     role="textbox"
@@ -29,7 +30,7 @@ export default {
     updateNote(e) {
       this.$store.commit("updateNote", {
         id: this.cardId,
-        note: e.target.value
+        note: e.target.value.trim()
       });
     },
   }

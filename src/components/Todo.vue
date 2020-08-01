@@ -5,23 +5,29 @@
       group="todos"
       @start="drag=true"
       @end="drag=false"
-      handle=".todo-handle"
+      handle=".todo"
       ghost-class="todo-ghost"
     >
       <transition-group name="todo" tag="div" @after-enter="setFocus">
-        <div v-for="todo in todoList" :key="todo.id">
-          <div @click="markTodo($event, todo.id)" class="todo-handle opacity-25 hover:opacity-75 select-none" />
-          <i @click="removeTodo($event, todo.id)" class="remove opacity-25 hover:opacity-100" />
+        <div v-for="todo in todoList" :key="todo.id" class="flex items-start">
+          <input
+            type="checkbox"
+            :checked="todo.done"
+            @click="markTodo($event, todo.id)"
+            class="opacity-50 cursor-pointer h-4 w-4 mt-1"
+          />
           <p
             @keydown.enter="addTodo($event, true)"
             @keydown.esc="setBlur"
             @keydown.delete="checkToRemove($event, todo.id)"
             @dblclick="makeEditable"
+            @contextmenu="makeEditable"
             @blur="updateTodo($event, todo.id)"
             spellcheck="false"
             :class="todo.done ? 'line-through text-gray-600' : 'no-underline'"
-            class="todo focus:outline-none focus:bg-gray-200 focus:cursor-text"
+            class="todo flex-1 focus:outline-none focus:bg-gray-200 focus:cursor-text"
           >{{todo.text}}</p>
+          <i @click="removeTodo($event, todo.id)" class="remove opacity-25 hover:opacity-100" />
         </div>
       </transition-group>
     </draggable>
@@ -75,7 +81,7 @@ export default {
         this.$store.commit("updateTodo", {
           id: this.cardId,
           todoId: id,
-          todo: e.target.innerText,
+          todo: e.target.innerText.trim(),
         });
         this.removeEditable(e);
       }
@@ -104,6 +110,7 @@ export default {
       e.target.blur();
     },
     makeEditable(e) {
+      e.stopPropagation();
       e.target.contentEditable = true;
       e.target.focus();
     },
@@ -111,7 +118,7 @@ export default {
       e.target.contentEditable = false;
     },
     setFocus(el) {
-      let todo = el.lastChild;
+      let todo = el.children[1];
       todo.contentEditable = true;
       todo.focus();
     },
@@ -130,9 +137,13 @@ export default {
   @apply rounded-sm;
   @apply break-all;
   @apply text-gray-800;
-  padding: 2px 1.25rem;
+  @apply pl-1;
+  @apply ml-1;
   min-height: 24px;
   transition: all 300ms;
+}
+.todo[contenteditable="true"] {
+  @apply bg-gray-200;
 }
 .todo-enter-active,
 .todo-leave-active {
@@ -150,21 +161,12 @@ export default {
 .todo-move {
   transition: transform 0.2s;
 }
-.todo-handle {
-  float: left;
-  cursor: pointer;
-  margin: 6px 0;
-  height: 16px;
-  width: 16px;
-  background: no-repeat url("/img/icons/drag_indicator.svg");
-  background-size: 16px 16px;
-}
+
 .todo-ghost {
   opacity: 0.2;
 }
 
 .remove {
-  float: right;
   cursor: pointer;
   margin: 6px 4px;
   height: 16px;
