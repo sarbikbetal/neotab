@@ -17,23 +17,35 @@
         <draggable
           v-model="sites"
           group="sites"
+          filter=".add-fav"
           @start="drag=true"
           @end="drag=false"
           direction="horizontal"
         >
           <transition-group name="sites" tag="div" class="flex">
-            <div
+            <a
               v-for="site in sites"
+              :href="site.url"
               :key="site.key"
               class="thumb hover:shadow-md hover:bg-gray-200 flex justify-center items-center"
             >
               <img
-                class="favicon mini-fav select-none"
+                class="favicon select-none"
                 :title="site.url"
                 :src="getFavicon(site.url)"
                 @error="loadDefault($event, site.url)"
               />
-            </div>
+            </a>
+            <button
+              :key="999999"
+              class="add-fav thumb hover:shadow-md hover:bg-gray-200 flex justify-center items-center"
+            >
+              <img
+                class="favicon select-none"
+                title="Add new favourite"
+                src="/img/icons/add.svg"
+              />
+            </button>
           </transition-group>
         </draggable>
       </section>
@@ -140,9 +152,6 @@ export default {
   @apply transition-all;
   @apply duration-300;
   @apply ease-out;
-}
-.mini-fav {
-  @apply cursor-move;
 }
 .initials {
   @apply font-sans;
