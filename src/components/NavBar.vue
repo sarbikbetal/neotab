@@ -19,7 +19,7 @@
     </div>
     <searchBar />
     <span class="text-2xl hidden md:inline">NeoTab</span>
-    <speedDial />
+    <speedDial class="add-widget" />
 
     <transition
       enter-class="opacity-0"
@@ -131,6 +131,15 @@ export default {
       },
     },
   },
+  beforeCreate() {
+    window.addEventListener("resize", () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    });
+
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  },
   mounted() {
     document.addEventListener("keydown", (e) => {
       if (e.keyCode == 27 && this.isOpen) this.isOpen = false;
@@ -147,4 +156,12 @@ export default {
   @apply rounded-full;
   @apply bg-gray-300;
 }
+
+.add-widget {
+  transition: all 400ms;
+  position: absolute;
+  right: 2rem;
+  top: calc(calc(var(--vh, 1vh) * 99) - 5rem);
+}
+
 </style>
