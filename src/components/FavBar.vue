@@ -19,17 +19,19 @@
           group="sites"
           @start="drag=true"
           @end="drag=false"
-          handle=".favicon"
           direction="horizontal"
         >
           <transition-group name="sites" tag="div" class="flex">
-            <div v-for="site in sites" :key="site" class="thumb hover:shadow-md hover:bg-gray-200">
-              <a :href="site" class="initials">{{getSiteInitials(site)}}</a>
+            <div
+              v-for="site in sites"
+              :key="site.key"
+              class="thumb hover:shadow-md hover:bg-gray-200 flex justify-center items-center"
+            >
               <img
-                class="favicon mini-fav ml-1 select-none"
-                :title="site"
-                :src="getFavicon(site)"
-                @error="loadDefault($event, site)"
+                class="favicon mini-fav select-none"
+                :title="site.url"
+                :src="getFavicon(site.url)"
+                @error="loadDefault($event, site.url)"
               />
             </div>
           </transition-group>
@@ -63,21 +65,22 @@ export default {
   data: function () {
     return {
       sites: [
-        "https://github.com",
-        "https://scotch.io",
-        "https://vuex.vuejs.org",
-        "https://www.npmjs.com",
-        "https://alligator.io",
-        "https://github.com",
-        "https://scotch.io",
-        "https://vuex.vuejs.org",
-        "https://www.npmjs.com",
-        "https://alligator.io",
-        "https://github.com",
-        "https://scotch.io",
-        "https://vuex.vuejs.org",
-        "https://www.npmjs.com",
-        "https://alligator.io",
+        {
+          key: 0,
+          url: "https://github.com",
+        },
+        {
+          key: 1,
+          url: "https://vuex.vuejs.org",
+        },
+        {
+          key: 2,
+          url: "https://www.npmjs.com",
+        },
+        {
+          key: 3,
+          url: "https://scotch.io",
+        },
       ],
     };
   },
@@ -85,26 +88,12 @@ export default {
     getFavicon,
     loadDefault,
     scrollLeft() {
-      console.log("left")
+      console.log("left");
       document.getElementById("fav-bar").scrollBy(-280, 0);
     },
     scrollRight() {
-      console.log("right")
+      console.log("right");
       document.getElementById("fav-bar").scrollBy(280, 0);
-    },
-    getSiteInitials(url) {
-      let hostname;
-
-      if (url.indexOf("//") > -1) {
-        hostname = url.split("/")[2];
-      } else {
-        hostname = url.split("/")[0];
-      }
-      hostname = hostname.split(":")[0].toUpperCase();
-      hostname = hostname.split("?")[0];
-      hostname = hostname.split("WWW.")[1] || hostname;
-
-      return hostname.slice(0, 1);
     },
   },
 };
@@ -114,7 +103,7 @@ export default {
 .fav-thumb-container {
   @apply flex;
   @apply justify-center;
-  @apply h-16;
+  @apply h-12;
   @apply rounded-md;
   @apply relative;
 }
@@ -130,7 +119,7 @@ export default {
 .scroll-btn {
   @apply absolute;
   z-index: 3;
-  top: 15px;
+  top: 7px;
 }
 .scroll-btn.left {
   left: -16px;
@@ -139,9 +128,10 @@ export default {
   right: -16px;
 }
 .thumb {
-  @apply h-12;
-  @apply w-12;
-  @apply m-2;
+  @apply h-10;
+  @apply w-10;
+  @apply mx-2;
+  @apply my-1;
   @apply text-center;
   @apply rounded-full;
   @apply bg-gray-300;
@@ -152,10 +142,7 @@ export default {
   @apply ease-out;
 }
 .mini-fav {
-  @apply absolute;
   @apply cursor-move;
-  bottom: 0;
-  right: 0;
 }
 .initials {
   @apply font-sans;

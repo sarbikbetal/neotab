@@ -46,6 +46,6 @@ export default {
   white-space: pre-wrap;
   min-height: 34px;
   appearance: none;
-  border: solid #bebebe52 1px;
+  border: none;
 }
 </style>

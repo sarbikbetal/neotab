@@ -1,5 +1,5 @@
 <template>
-  <div class="expanded flex-1 flex-shrink-1 bg-gray-100 m-2 py-2">
+  <div class="expanded flex-1 flex-shrink-1 bg-transparent m-1">
     <slot />
   </div>
 </template>

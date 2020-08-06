@@ -5,8 +5,9 @@
   >
     <button
       @click="toggleSD"
+      @blur="toggleSD"
       type="button"
-      class="flex md-button items-center justify-between md-ripple text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
+      class="flex md-button items-center justify-between md-ripple text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
       style="padding: 8px 20px 8px 12px;"
       md-fab-trigger
     >
@@ -30,7 +31,7 @@
     <button
       @click="addNoteCard"
       type="button"
-      class="flex md-button md-ripple justify-between text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
+      class="flex md-button md-ripple justify-between text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
       style="padding: 8px 20px 8px 12px;"
     >
       <svg class="inline" height="24" viewBox="0 0 24 24" width="24">
@@ -45,7 +46,7 @@
     <button
       @click="addTodoCard"
       type="button"
-      class="flex md-button md-ripple justify-between text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
+      class="flex md-button md-ripple justify-between text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
       style="padding: 8px 20px 8px 12px;"
     >
       <svg class="inline" height="24" viewBox="0 0 24 24" width="24">
@@ -60,7 +61,7 @@
     <button
       @click="addBookmarkCard"
       type="button"
-      class="flex md-button md-ripple justify-between text-gray-800 bg-green-200 hover:bg-green-300 focus:outline-none focus:bg-green-300"
+      class="flex md-button md-ripple justify-between text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
       style="padding: 8px 20px 8px 12px;"
     >
       <svg class="inline" height="24" viewBox="0 0 24 24" width="24">
@@ -112,6 +113,7 @@ export default {
 }
 
 button {
+  /* #ffd959 */
   display: block;
   min-height: 3rem;
   width: 100%;

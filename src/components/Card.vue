@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded shadow-lg m-3 bg-white my-4" :class="type=='todo' ? 'mb-8' : ''">
+  <div class="rounded shadow-lg m-2 bg-white my-4" :class="type=='todo' ? 'mb-8' : ''">
     <div class="p-4">
       <i class="handle opacity-25 hover:opacity-100" />
       <p
