@@ -1,5 +1,5 @@
 <template>
-  <div @contextmenu="showMenu" @click="hideMenu" class="flex flex-col md:flex-row mb-4 pt-16">
+  <div @contextmenu="showMenu" @click="hideMenu" class="flex flex-col md:flex-row mb-4">
     <column v-for="(col, i) in columns" :key="col">
       <draggable
         v-model="data[i]"

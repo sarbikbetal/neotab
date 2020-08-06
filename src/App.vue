@@ -39,9 +39,20 @@ export default {
 </script>
 
 <style>
+html {
+  scroll-behavior: smooth;
+}
+
 #app {
   @apply font-sans;
 }
+
+.favicon {
+  margin: 4px 0;
+  height: 20px;
+  width: 20px;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

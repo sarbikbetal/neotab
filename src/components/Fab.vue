@@ -6,18 +6,15 @@
 
 <script>
 export default {
-  name: "fab"
+  name: "fab",
 };
 </script>
 
 <style>
 .fab {
-  @apply absolute;
   @apply rounded-full;
   @apply bg-gray-100;
   @apply shadow-md;
-  bottom: -36px;
-  right: 2%;
 }
 /* Ripple effect */
 .ripple {

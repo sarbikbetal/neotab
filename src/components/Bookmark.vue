@@ -68,6 +68,7 @@
 
 <script>
 import draggable from "vuedraggable";
+import { getFavicon, loadDefault } from "../services/favicon";
 export default {
   name: "bookmark",
   components: {
@@ -99,19 +100,8 @@ export default {
     },
   },
   methods: {
-    getFavicon(url) {
-      let siteUrl = url;
-      try {
-        siteUrl = new URL(url).origin;
-      } catch (error) {
-        siteUrl = "https://" + (url.split("/")[0] || url);
-      }
-      return siteUrl + "/favicon.ico";
-    },
-    loadDefault(e, url) {
-      e.target.src =
-        "https://s2.googleusercontent.com/s2/favicons?domain_url=" + url;
-    },
+    getFavicon,
+    loadDefault,
     toggleForm(e) {
       e.target.blur();
       if (this.editing) {
@@ -243,11 +233,5 @@ export default {
 
 .link-ghost {
   opacity: 0.2;
-}
-
-.favicon {
-  margin: 4px 0;
-  height: 20px;
-  width: 20px;
 }
 </style>

@@ -13,7 +13,7 @@ export default {
 <style>
 @screen md {
   .expanded {
-    min-height: calc(100vh - 96px);
+    min-height: calc(100vh - 10rem);
   }
 }
 </style>

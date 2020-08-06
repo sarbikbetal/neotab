@@ -31,7 +31,7 @@
         </div>
       </transition-group>
     </draggable>
-    <fab class="mr-2 focus:bg-gray-300" @click.native="addTodo">
+    <fab class="mr-2 fab-add-btn focus:bg-gray-300" @click.native="addTodo">
       <div class="add-todo-btn select-none" />
     </fab>
   </div>
@@ -127,6 +127,11 @@ export default {
 </script>
 
 <style>
+.fab-add-btn {
+  @apply absolute;
+  bottom: -36px;
+  right: 2%;
+}
 .add-todo-btn {
   height: 24px;
   width: 24px;
