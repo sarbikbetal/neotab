@@ -61,11 +61,18 @@
         <span>Home</span>
       </span>
       <div class="flex-1"></div>
+
+      <span class="drawer-item flex items-center justify-between p-4">
+        <span>Theme</span>
+        <dropdown @input="changeTheme" :selected="selectedTheme" :options="themes" class="ml-2" />
+      </span>
+
       <div class="hidden md:flex items-center justify-around my-3">
         <button class="column-btn ripple" @click="dec">-</button>
         <span>{{this.$store.state.columns.length}} Columns</span>
         <button class="column-btn ripple" @click="inc">+</button>
       </div>
+
       <span @click="isOpen = false" class="drawer-item flex items-center p-4">
         <span class="mr-2">
           <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
@@ -84,16 +91,26 @@
 <script>
 import searchBar from "@/components/SearchBar";
 import speedDial from "@/components/SpeedDial";
+import dropdown from "@/components/Dropdown";
+import { setTheme } from "../services/themer";
+
 export default {
   name: "navbar",
   components: {
     searchBar,
     speedDial,
+    dropdown,
   },
   data() {
     return {
       isOpen: false,
+      themes: ["Light", "Dark"],
     };
+  },
+  computed: {
+    selectedTheme() {
+      return this.$store.state.theme;
+    },
   },
   methods: {
     drawer() {
@@ -104,6 +121,10 @@ export default {
     },
     dec() {
       this.$store.commit("decreaseCols");
+    },
+    changeTheme(theme) {
+      this.$store.commit("setTheme", theme);
+      setTheme(theme);
     },
   },
   watch: {
@@ -130,6 +151,8 @@ export default {
     document.addEventListener("keydown", (e) => {
       if (e.keyCode == 27 && this.isOpen) this.isOpen = false;
     });
+
+    setTheme(this.selectedTheme);
   },
 };
 </script>
