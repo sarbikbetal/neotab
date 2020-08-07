@@ -31,17 +31,16 @@ export default {
 
 <style>
 .menu {
-  @apply bg-white;
+  background-color: var(--header-bg-color);
   @apply shadow-xl;
   @apply rounded;
   @apply opacity-0;
-  scale: 0;
+  @apply hidden;
   width: 120px;
   position: absolute;
-  transition: opacity 200ms, scale 200ms;
 }
+
 .show-menu {
-  scale: 1;
   @apply block;
   @apply opacity-100;
 }
@@ -55,17 +54,17 @@ export default {
   cursor: pointer;
 }
 .menu .menu-options .menu-option.menu-disabled {
-  @apply bg-gray-300;
+  background-color: var(--primary);
   @apply opacity-25;
   pointer-events: none;
 }
 .menu .menu-options .menu-option:hover {
   @apply rounded;
-  @apply bg-gray-300;
+  background-color: var(--primary);
 }
 
 .menu .menu-options .divider {
-  @apply bg-gray-300;
+  background-color: var(--primary);
   height: 1px;
 }
 </style>

@@ -35,7 +35,7 @@
         <label class="bkmrk-label">Title</label>
         <input
           v-model="bkmTitle"
-          class="md:flex-1 bkmrk-field focus:outline-none focus:bg-gray-200"
+          class="md:flex-1 bkmrk-field focus:outline-none"
           type="text"
           @keydown.enter="focusNextField"
         />
@@ -44,24 +44,25 @@
         <label class="bkmrk-label">URL</label>
         <input
           v-model="bkmURL"
-          class="md:flex-1 bkmrk-field focus:outline-none focus:bg-gray-200"
+          class="md:flex-1 bkmrk-field focus:outline-none"
           type="url"
           @keydown.enter="toggleForm"
         />
       </div>
-      <button
-        @click="deleteBookmark"
-        v-if="bkmId"
-        class="remove-bookmark bg-gray-100 focus:outline-none focus:opacity-75 focus:bg-gray-300 hover:opacity-75 hover:shadow hover:bg-gray-200"
-      >
+      <button @click="deleteBookmark" v-if="bkmId" class="remove-bookmark">
         <div class="bg"></div>
       </button>
     </div>
     <div class="text-center h-8 pt-3">
-      <button
-        @click="toggleForm"
-        class="add-bookmark bg-gray-100 focus:outline-none focus:opacity-100 focus:bg-gray-300 hover:opacity-100 hover:shadow hover:bg-gray-200"
-      />
+      <button @click="toggleForm" class="add-bookmark">
+        <svg class="add-todo-btn select-none" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M0 0h24v24H0V0z" fill="none" />
+          <path
+            fill="var(--text-light)"
+            d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+          />
+        </svg>
+      </button>
     </div>
   </div>
 </template>
@@ -166,17 +167,37 @@ export default {
   @apply opacity-75;
   height: 24px;
   width: 24px;
-  background: no-repeat url("/img/icons/add.svg");
-  background-size: 24px 24px;
-  transition: all 200ms ease-out;
+  background-color: var(--primary);
+  transition: all 200ms ease-in;
+}
+.add-bookmark:hover {
+  @apply shadow;
+  opacity: 1;
+  background-color: var(--primary-light);
+}
+.add-bookmark:focus {
+  outline: none;
+  opacity: 1;
+  background-color: var(--primary-light);
 }
 .remove-bookmark {
   @apply rounded-full;
   @apply opacity-50;
+  background-color: var(--primary);
   height: 28px;
   width: 28px;
   padding: 2px;
-  transition: all 200ms ease-out;
+  transition: all 200ms ease-in;
+}
+.remove-bookmark:hover {
+  @apply shadow;
+  opacity: 0.75;
+  background-color: var(--primary-light);
+}
+.remove-bookmark:focus {
+  outline: none;
+  opacity: 0.75;
+  background-color: var(--primary-light);
 }
 .remove-bookmark .bg {
   height: 24px;
@@ -187,20 +208,20 @@ export default {
 
 .bkmrk-label {
   @apply block;
-  @apply text-gray-700;
+  color: var(--text-strong);
   @apply text-left;
   @apply pr-2;
   min-width: 48px;
 }
 .bkmrk-field {
+  background-color: var(--primary);
+  color: var(--text);
   @apply appearance-none;
-  @apply bg-gray-100;
   @apply rounded;
   @apply w-full;
   @apply min-w-0;
   @apply py-1;
   @apply px-2;
-  @apply text-gray-700;
   @apply leading-tight;
 }
 .form-group {
@@ -212,7 +233,7 @@ export default {
 .link {
   @apply pl-1;
   @apply text-base;
-  @apply text-teal-700;
+  color: var(--link);
 }
 .link-enter-active,
 .link-leave-active {

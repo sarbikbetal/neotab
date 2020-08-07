@@ -6,7 +6,7 @@
     <button
       @click="toggleSD"
       type="button"
-      class="flex md-button items-center justify-between md-ripple text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
+      class="flex md-button items-center justify-between md-ripple text-gray-800"
       style="padding: 8px 20px 8px 12px;"
       md-fab-trigger
     >
@@ -19,7 +19,7 @@
       >
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path
-          fill="#4a5568"
+          fill="#212121"
           d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
         />
       </svg>
@@ -30,13 +30,13 @@
     <button
       @click="addNoteCard"
       type="button"
-      class="flex md-button md-ripple justify-between text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
+      class="flex md-button md-ripple justify-between text-gray-800"
       style="padding: 8px 20px 8px 12px;"
     >
       <svg class="inline" height="24" viewBox="0 0 24 24" width="24">
         <rect fill="none" height="24" width="24" />
         <path
-          fill="#4a5568"
+          fill="#212121"
           d="M19,5v9l-5,0l0,5H5V5H19 M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h10l6-6V5C21,3.9,20.1,3,19,3z M12,14H7v-2h5V14z M17,10H7V8h10V10z"
         />
       </svg>
@@ -45,13 +45,13 @@
     <button
       @click="addTodoCard"
       type="button"
-      class="flex md-button md-ripple justify-between text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
+      class="flex md-button md-ripple justify-between text-gray-800"
       style="padding: 8px 20px 8px 12px;"
     >
       <svg class="inline" height="24" viewBox="0 0 24 24" width="24">
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path
-          fill="#4a5568"
+          fill="#212121"
           d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"
         />
       </svg>
@@ -60,13 +60,13 @@
     <button
       @click="addBookmarkCard"
       type="button"
-      class="flex md-button md-ripple justify-between text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
+      class="flex md-button md-ripple justify-between text-gray-800"
       style="padding: 8px 20px 8px 12px;"
     >
       <svg class="inline" height="24" viewBox="0 0 24 24" width="24">
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path
-          fill="#4a5568"
+          fill="#212121"
           d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"
         />
       </svg>
@@ -114,7 +114,7 @@ export default {
   transition: all 200ms;
 }
 
-button {
+.md-button {
   /* #ffd959 */
   display: block;
   min-height: 3rem;
@@ -122,6 +122,16 @@ button {
   transition: width 300ms;
   @apply shadow-lg;
   @apply rounded-full;
+  color: #212121;
+  background-color: var(--accent);
+}
+.md-button:hover {
+  @apply shadow-lg;
+  background-color: var(--accent-light);
+}
+.md-button:focus {
+  background-color: var(--accent-light);
+  outline: none;
 }
 
 .md-ripple {
