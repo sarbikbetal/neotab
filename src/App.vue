@@ -39,8 +39,26 @@ export default {
 </script>
 
 <style>
+:root {
+  /* Simple Dark */
+  --header-bg-color: #212121;
+  --primary: #323232;
+  --primary-light: #353535;
+  --secondary: #f687b3;
+  --board: #121212;
+  --accent: #81e6d9;
+  --accent-light: #b2f5ea;
+  --link: #b2f5ea;
+  --text-strong: #d6d6d6;
+  --text: #c4c4c4;
+  --text-light: #838383;
+
+  color: var(--text);
+}
+
 html {
   scroll-behavior: smooth;
+  background-color: var(--header-bg-color);
 }
 
 #app {
@@ -51,6 +69,10 @@ html {
   margin: 4px 0;
   height: 20px;
   width: 20px;
+}
+::selection {
+  color: var(--text-strong);
+  background: var(--accent);
 }
 
 ::-webkit-scrollbar {

@@ -1,5 +1,5 @@
 <template>
-  <div @contextmenu="showMenu" @click="hideMenu" class="flex flex-col md:flex-row mb-2 mt-2 bg-gray-100">
+  <div @contextmenu="showMenu" @click="hideMenu" class="board flex flex-col md:flex-row mb-2">
     <column v-for="(col, i) in columns" :key="col">
       <draggable
         v-model="data[i]"
@@ -133,6 +133,9 @@ export default {
 </script>
 
 <style>
+.board {
+  background: var(--board);
+}
 .list-enter-active {
   transition: all 0.3s;
 }

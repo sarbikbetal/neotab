@@ -4,7 +4,7 @@
     @blur="updateNote"
     @contextmenu="$event.stopPropagation()"
     spellcheck="false"
-    class="note p-1 mt-1 rounded-sm focus:outline-none focus:bg-gray-200 w-full"
+    class="note p-1 mt-1 rounded-sm w-full"
     role="textbox"
     rows="5"
     :value="noteData"
@@ -16,12 +16,12 @@ export default {
   name: "note",
   props: {
     cardId: Number,
-    body: String
+    body: String,
   },
   computed: {
     noteData() {
       return this.body;
-    }
+    },
   },
   methods: {
     focusOut(e) {
@@ -30,16 +30,17 @@ export default {
     updateNote(e) {
       this.$store.commit("updateNote", {
         id: this.cardId,
-        note: e.target.value.trim()
+        note: e.target.value.trim(),
       });
     },
-  }
+  },
 };
 </script>
 
 <style scoped>
 .note {
-  @apply text-gray-600;
+  color: var(--text);
+  background-color: var(--header);
   @apply text-base;
   @apply break-all;
   white-space: pre-line;
@@ -48,4 +49,9 @@ export default {
   appearance: none;
   border: none;
 }
+.note:focus{
+  outline: none;
+  background-color: var(--primary);
+}
+
 </style>

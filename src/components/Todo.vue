@@ -14,7 +14,7 @@
             type="checkbox"
             :checked="todo.done"
             @click="markTodo($event, todo.id)"
-            class="opacity-50 cursor-pointer h-4 w-4 mt-1"
+            class="opacity-50 cursor-pointer h-4 w-4 mt-1 ml-1"
           />
           <p
             @keydown.enter="addTodo($event, true)"
@@ -24,15 +24,21 @@
             @contextmenu="makeEditable"
             @blur="updateTodo($event, todo.id)"
             spellcheck="false"
-            :class="todo.done ? 'line-through text-gray-600' : 'no-underline'"
-            class="todo flex-1 focus:outline-none focus:bg-gray-200 focus:cursor-text"
+            :class="todo.done ? 'line-through done' : 'no-underline'"
+            class="todo flex-1"
           >{{todo.text}}</p>
-          <i @click="removeTodo($event, todo.id)" class="remove opacity-25 hover:opacity-100" />
+          <i @click="removeTodo($event, todo.id)" class="remove opacity-75 hover:opacity-100" />
         </div>
       </transition-group>
     </draggable>
-    <fab class="mr-2 fab-add-btn focus:bg-gray-300" @click.native="addTodo">
-      <div class="add-todo-btn select-none" />
+    <fab class="mr-2 fab-add-btn" @click.native="addTodo">
+      <svg class="add-todo-btn select-none" height="24" viewBox="0 0 24 24" width="24">
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path
+          fill="var(--text-light)"
+          d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+        />
+      </svg>
     </fab>
   </div>
 </template>
@@ -135,20 +141,26 @@ export default {
 .add-todo-btn {
   height: 24px;
   width: 24px;
-  background: no-repeat url("/img/icons/add.svg");
-  background-size: 24px 24px;
 }
 .todo {
   @apply rounded-sm;
   @apply break-all;
-  @apply text-gray-800;
-  @apply pl-1;
+  @apply pl-2;
   @apply ml-1;
+  color: var(--text);
   min-height: 24px;
   transition: all 300ms;
 }
+.todo.done {
+  color: var(--text-light);
+}
+.todo:focus {
+  @apply cursor-text;
+  @apply outline-none;
+  background-color: var(--primary);
+}
 .todo[contenteditable="true"] {
-  @apply bg-gray-200;
+  background-color: var(--primary);
 }
 .todo-enter-active,
 .todo-leave-active {

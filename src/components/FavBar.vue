@@ -1,12 +1,12 @@
 <template>
-  <div class="mx-6 md:mx-8 lg:mx-10 pt-16">
+  <div class="favbar px-6 md:px-8 lg:px-10 pt-16">
     <div class="fav-thumb-container">
       <!-- Left scroll button -->
       <fab @click.native="scrollLeft" class="scroll-btn left">
         <svg viewBox="0 0 24 24" fill="black" width="18px" height="18px">
           <path d="M0 0h24v24H0V0z" fill="none" opacity=".87" />
           <path
-            fill="#4a5568"
+            fill="var(--text-light)"
             d="M16.62 2.99c-.49-.49-1.28-.49-1.77 0L6.54 11.3c-.39.39-.39 1.02 0 1.41l8.31 8.31c.49.49 1.28.49 1.77 0s.49-1.28 0-1.77L9.38 12l7.25-7.25c.48-.48.48-1.28-.01-1.76z"
           />
         </svg>
@@ -27,7 +27,7 @@
               v-for="site in sites"
               :href="site.url"
               :key="site.key"
-              class="thumb hover:shadow-md hover:bg-gray-200 flex justify-center items-center"
+              class="thumb hover:shadow-md flex justify-center items-center"
             >
               <img
                 class="favicon select-none"
@@ -38,13 +38,15 @@
             </a>
             <button
               :key="999999"
-              class="add-fav thumb hover:shadow-md hover:bg-gray-200 flex justify-center items-center"
+              class="add-fav thumb hover:shadow-md flex justify-center items-center"
             >
-              <img
-                class="favicon select-none"
-                title="Add new favourite"
-                src="/img/icons/add.svg"
-              />
+              <svg class="select-none" height="24" viewBox="0 0 24 24" width="24">
+                <path d="M0 0h24v24H0V0z" fill="none" />
+                <path
+                  fill="var(--text-light)"
+                  d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+                />
+              </svg>
             </button>
           </transition-group>
         </draggable>
@@ -55,7 +57,7 @@
         <svg viewBox="0 0 24 24" width="18px" height="18px">
           <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
           <path
-            fill="#4a5568"
+            fill="var(--text-light)"
             d="M7.38 21.01c.49.49 1.28.49 1.77 0l8.31-8.31c.39-.39.39-1.02 0-1.41L9.15 2.98c-.49-.49-1.28-.49-1.77 0s-.49 1.28 0 1.77L14.62 12l-7.25 7.25c-.48.48-.48 1.28.01 1.76z"
           />
         </svg>
@@ -100,11 +102,9 @@ export default {
     getFavicon,
     loadDefault,
     scrollLeft() {
-      console.log("left");
       document.getElementById("fav-bar").scrollBy(-280, 0);
     },
     scrollRight() {
-      console.log("right");
       document.getElementById("fav-bar").scrollBy(280, 0);
     },
   },
@@ -112,12 +112,16 @@ export default {
 </script>
 
 <style scoped>
+.favbar {
+  background-color: var(--header-bg-color);
+}
 .fav-thumb-container {
   @apply flex;
   @apply justify-center;
-  @apply h-12;
+  @apply pb-2;
   @apply rounded-md;
   @apply relative;
+  height: 3.5rem;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
@@ -146,17 +150,15 @@ export default {
   @apply my-1;
   @apply text-center;
   @apply rounded-full;
-  @apply bg-gray-300;
   @apply relative;
   @apply cursor-pointer;
   @apply transition-all;
   @apply duration-300;
   @apply ease-out;
+  background-color: var(--primary);
 }
-.initials {
-  @apply font-sans;
-  @apply text-gray-700;
-  font-size: 2rem;
+.thumb:hover {
+  background-color: var(--primary-light);
 }
 .sites-enter-active,
 .sites-leave-active {
