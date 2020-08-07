@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="flex fixed w-full items-center justify-between px-6 h-16 bg-white text-gray-700 border-gray-200 z-10"
-  >
+  <nav class="navbar flex fixed w-full items-center justify-between px-6 h-16 z-10">
     <div class="flex items-center">
       <button class="mr-2" aria-label="Open Menu" @click="drawer">
         <svg
@@ -19,7 +17,7 @@
     </div>
     <searchBar />
     <span class="text-2xl hidden md:inline">NeoTab</span>
-    <speedDial />
+    <speedDial class="add-widget" />
 
     <transition
       enter-class="opacity-0"
@@ -38,16 +36,13 @@
       </div>
     </transition>
     <aside
-      class="flex flex-col transform top-0 left-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
+      class="drawer flex flex-col transform top-0 left-0 w-64 fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
       :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
     >
-      <span @click="isOpen = false" class="flex w-full items-center p-4 border-b">
+      <span @click="isOpen = false" class="drawer-header flex w-full items-center p-4">
         <h2 class="text-2xl">Neotab</h2>
       </span>
-      <span
-        @click="isOpen = false"
-        class="flex items-center p-4 hover:bg-indigo-500 hover:text-white"
-      >
+      <span @click="isOpen = false" class="drawer-item flex items-center p-4">
         <span class="mr-2">
           <svg
             fill="none"
@@ -66,21 +61,19 @@
         <span>Home</span>
       </span>
       <div class="flex-1"></div>
+
+      <span class="drawer-item flex items-center justify-between p-4">
+        <span>Theme</span>
+        <dropdown @input="changeTheme" :selected="selectedTheme" :options="themes" class="ml-2" />
+      </span>
+
       <div class="hidden md:flex items-center justify-around my-3">
-        <button
-          class="col-btn ripple hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
-          @click="dec"
-        >-</button>
+        <button class="column-btn ripple" @click="dec">-</button>
         <span>{{this.$store.state.columns.length}} Columns</span>
-        <button
-          class="col-btn ripple hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
-          @click="inc"
-        >+</button>
+        <button class="column-btn ripple" @click="inc">+</button>
       </div>
-      <span
-        @click="isOpen = false"
-        class="flex items-center p-4 hover:bg-indigo-500 hover:text-white"
-      >
+
+      <span @click="isOpen = false" class="drawer-item flex items-center p-4">
         <span class="mr-2">
           <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
             <path
@@ -98,16 +91,26 @@
 <script>
 import searchBar from "@/components/SearchBar";
 import speedDial from "@/components/SpeedDial";
+import dropdown from "@/components/Dropdown";
+import { setTheme } from "../services/themer";
+
 export default {
   name: "navbar",
   components: {
     searchBar,
     speedDial,
+    dropdown,
   },
   data() {
     return {
       isOpen: false,
+      themes: ["Light", "Dark"],
     };
+  },
+  computed: {
+    selectedTheme() {
+      return this.$store.state.theme;
+    },
   },
   methods: {
     drawer() {
@@ -118,6 +121,10 @@ export default {
     },
     dec() {
       this.$store.commit("decreaseCols");
+    },
+    changeTheme(theme) {
+      this.$store.commit("setTheme", theme);
+      setTheme(theme);
     },
   },
   watch: {
@@ -131,20 +138,59 @@ export default {
       },
     },
   },
+  beforeCreate() {
+    window.addEventListener("resize", () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    });
+
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  },
   mounted() {
     document.addEventListener("keydown", (e) => {
       if (e.keyCode == 27 && this.isOpen) this.isOpen = false;
     });
+
+    setTheme(this.selectedTheme);
   },
 };
 </script>
 
 <style>
-.col-btn {
+.navbar {
+  background-color: var(--header-bg-color);
+  color: var(--text-strong);
+}
+.drawer {
+  background-color: var(--header-bg-color);
+}
+.drawer-header {
+  @apply border-b-2;
+  border-color: var(--secondary);
+}
+.drawer-item:hover {
+  background-color: var(--secondary);
+  color: white;
+}
+.column-btn {
   @apply py-2;
   @apply w-10;
   @apply mx-2;
   @apply rounded-full;
-  @apply bg-gray-300;
+  background-color: var(--primary);
+}
+.column-btn:hover {
+  background-color: var(--primary-light);
+}
+.column-btn:focus {
+  outline: none;
+  background-color: var(--primary-light);
+}
+.add-widget {
+  transition: all 400ms;
+  position: absolute;
+  right: 2rem;
+  top: calc(calc(var(--vh, 1vh) * 99) - 5rem);
 }
 </style>

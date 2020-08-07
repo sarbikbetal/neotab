@@ -1,5 +1,5 @@
 <template>
-  <div class="expanded flex-1 flex-shrink-1 bg-gray-100 m-2 py-2">
+  <div class="expanded flex-1 flex-shrink-1 bg-transparent m-1">
     <slot />
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
 <style>
 @screen md {
   .expanded {
-    min-height: calc(100vh - 96px);
+    min-height: calc(100vh - 10rem);
   }
 }
 </style>

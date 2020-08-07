@@ -39,7 +39,8 @@ export default new Store({
             []
         ],
         counters: [4, 8],
-        columns: [0, 1, 2]
+        columns: [0, 1, 2],
+        theme: "Dark"
     },
     mutations: {
         //Overwrite app state
@@ -47,6 +48,10 @@ export default new Store({
             console.log("Restoring saved state");
             this.replaceState(Object.assign(state, savedState));
             state = savedState;
+        },
+        // Set theme
+        setTheme(state, theme) {
+            state.theme = theme;
         },
         // Columns
         increaseCols(state) {
@@ -73,10 +78,10 @@ export default new Store({
             }
         },
         addNoteCard(state) {
-            state.cardData[0].unshift({ id: state.counters[0]++, type: "note", title: "Note", text: " " })
+            state.cardData[state.columns.length - 1].unshift({ id: state.counters[0]++, type: "note", title: "Note", text: " " })
         },
         addTodoCard(state) {
-            state.cardData[0].unshift({
+            state.cardData[state.columns.length - 1].unshift({
                 id: state.counters[0]++,
                 type: "todo",
                 title: "Todo",
@@ -84,7 +89,7 @@ export default new Store({
             })
         },
         addBookmarkCard(state) {
-            state.cardData[0].unshift({
+            state.cardData[state.columns.length - 1].unshift({
                 id: state.counters[0]++,
                 type: "bookmark",
                 title: "Bookmarks",

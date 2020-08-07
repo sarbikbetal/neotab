@@ -1,23 +1,28 @@
 <template>
-  <button class="fab ripple p-2 focus:outline-none hover:bg-gray-200 hover:shadow-lg">
+  <button class="fab ripple p-2">
     <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
-  name: "fab"
+  name: "fab",
 };
 </script>
 
 <style>
 .fab {
-  @apply absolute;
   @apply rounded-full;
-  @apply bg-gray-100;
   @apply shadow-md;
-  bottom: -36px;
-  right: 2%;
+  background-color: var(--primary);
+}
+.fab:hover {
+  @apply shadow-lg;
+  background-color: var(--primary-light);
+}
+.fab:focus {
+  background-color: var(--primary-light);
+  outline: none;
 }
 /* Ripple effect */
 .ripple {
@@ -25,12 +30,8 @@ export default {
   transition: background 0.3s;
   transition: box-shadow 0.3s;
 }
-.ripple:hover {
-  background: #0000001f radial-gradient(circle, transparent 1%, #0000001f 1%)
-    center/15000%;
-}
 .ripple:active {
-  background-color: #0000001f;
+  background-color: #2e2e2e2f;
   background-size: 100%;
   transition: background 0s;
 }

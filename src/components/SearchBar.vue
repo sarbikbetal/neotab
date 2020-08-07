@@ -2,7 +2,7 @@
   <input
     @keyup.enter="search"
     v-model="terms"
-    class="websearch placeholder-gray-600 hover:bg-gray-200 hover:border-gray-600 focus:outline-none focus:bg-white focus:shadow-md md:max-w-lg lg:max-w-xl py-2 pr-4 pl-10 block w-full appearance-none leading-normal"
+    class="websearch md:max-w-lg lg:max-w-xl py-2 pr-4 pl-10 block w-full appearance-none leading-normal"
     type="text"
     placeholder="Search the web"
   />
@@ -31,6 +31,18 @@ export default {
   @apply duration-300;
   @apply ease-in-out;
   @apply rounded-lg;
-  @apply bg-gray-300;
+  background-color: var(--primary);
+}
+.websearch:hover {
+  background-color: var(--primary-light);
+  border-color: var(--accent);
+}
+.websearch:focus {
+  @apply shadow-md;
+  outline: none;
+  background-color: var(--primary-light);
+}
+.websearch::placeholder {
+  color: var(--text-light);
 }
 </style>

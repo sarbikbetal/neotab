@@ -1,10 +1,13 @@
 # NeoTab
-Your start page to productivity
+Your way to productivity.
++ Organise your start page with notes, to-dos and reading lists.
++ Blazing fast.
++ Works offline.
 
 ### Work in progress
-- Navbar
-- Nav drawer
 - Nav rails for desktop
+- Bookmarks bar
+- Dark themes*
 
 ### Features
 - [x] Sticky notes
@@ -12,12 +15,12 @@ Your start page to productivity
 - [x] Favourite links
 - [ ] Bookmarks bar
 - [ ] More cards
-- [ ] Dark themes* (yeah, multiple)
+- [x] Dark theme*
 - [ ] Color customizations
 - [ ] Archive
 - [ ] Kanban
 
-*Till then your eyes will bleed, sorry but bear with me.
+*One for now, more to come.
 
 ## Project setup
 ```
@@ -33,5 +36,7 @@ npm run serve
 ```
 npm run build
 ```
+
+**Built with Vue js and tailwind css.**
 
 Favicon made by [Good Ware](https://www.flaticon.com/authors/good-ware) from [www.flaticon.com](https://www.flaticon.com/)

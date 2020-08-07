@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded shadow-lg m-3 bg-white my-4" :class="type=='todo' ? 'mb-8' : ''">
+  <div class="card rounded shadow-lg m-2 my-4" :class="type=='todo' ? 'mb-8' : ''">
     <div class="p-4">
       <i class="handle opacity-25 hover:opacity-100" />
       <p
@@ -7,7 +7,7 @@
         @dblclick="makeEditable"
         @blur="updateTitle"
         spellcheck="false"
-        class="title font-bold text-xl rounded-sm mr-8 px-1 text-gray-700 appearance-none focus:outline-none focus:bg-gray-200"
+        class="card-title font-bold rounded-sm mr-8 px-1 appearance-none"
       >{{title}}</p>
       <note v-if="type=='note'" :body="text" :cardId="cardId" />
       <todo v-else-if="type=='todo'" :body="body" :cardId="cardId" />
@@ -52,12 +52,15 @@ export default {
     },
     removeEditable(e) {
       e.target.contentEditable = false;
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
+.card {
+  background-color: var(--header-bg-color);
+}
 .handle {
   float: right;
   cursor: move;
@@ -67,8 +70,14 @@ export default {
   background-size: 24px 24px;
 }
 
-p.title {
+.card-title {
+  font-size: 1.15rem;
+  color: var(--text-strong);
   transition: all 200ms ease-out;
   text-decoration: none;
+}
+.card-title:focus {
+  outline: none;
+  background-color: var(--primary);
 }
 </style>

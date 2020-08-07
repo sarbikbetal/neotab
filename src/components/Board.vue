@@ -1,5 +1,5 @@
 <template>
-  <div @contextmenu="showMenu" @click="hideMenu" class="md:flex mb-4 pt-16">
+  <div @contextmenu="showMenu" @click="hideMenu" class="board flex flex-col md:flex-row mb-2">
     <column v-for="(col, i) in columns" :key="col">
       <draggable
         v-model="data[i]"
@@ -80,7 +80,6 @@ export default {
 
       this.setPosition(origin);
       this.selectedText = this.copyText();
-      console.log(this.selectedText);
     },
     setPosition({ top, left }) {
       const menu = document.querySelector(".menu");
@@ -134,6 +133,9 @@ export default {
 </script>
 
 <style>
+.board {
+  background: var(--board);
+}
 .list-enter-active {
   transition: all 0.3s;
 }
