@@ -5,7 +5,6 @@
   >
     <button
       @click="toggleSD"
-      @blur="toggleSD"
       type="button"
       class="flex md-button items-center justify-between md-ripple text-gray-800 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:bg-yellow-300"
       style="padding: 8px 20px 8px 12px;"
@@ -88,15 +87,18 @@ export default {
     toggleSD(e) {
       this.open = !this.open;
     },
-    addNoteCard() {
+    hideSD(e) {
+      this.open = false;
+    },
+    addNoteCard(e) {
       this.$store.commit("addNoteCard");
       this.toggleSD();
     },
-    addTodoCard() {
+    addTodoCard(e) {
       this.$store.commit("addTodoCard");
       this.toggleSD();
     },
-    addBookmarkCard() {
+    addBookmarkCard(e) {
       this.$store.commit("addBookmarkCard");
       this.toggleSD();
     },
