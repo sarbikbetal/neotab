@@ -1,4 +1,6 @@
 # NeoTab
+[![Netlify Status](https://api.netlify.com/api/v1/badges/89095a92-16e8-46c9-a241-fd58da78da28/deploy-status)](https://app.netlify.com/sites/neotab/deploys)
+
 Your way to productivity.
 + Organise your start page with notes, to-dos and reading lists.
 + Blazing fast.

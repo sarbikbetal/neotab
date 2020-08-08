@@ -16,22 +16,24 @@ export default {
     console.log("Paste filter registered");
     document.querySelector("#app").addEventListener("paste", function (e) {
       let tag = e.target.tagName.toLowerCase();
-      if (
-        tag == "textarea" ||
-        (tag == "input" &&
-          /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
-          typeof activeEl.selectionStart == "number")
-      ) {
-        return;
-      }
-
-      e.preventDefault();
-      if (e.clipboardData && e.clipboardData.getData) {
-        var text = e.clipboardData.getData("text/plain");
-        document.execCommand("insertHTML", false, text);
-      } else if (window.clipboardData && window.clipboardData.getData) {
-        var text = window.clipboardData.getData("Text");
-        insertTextAtCursor(text);
+      try {
+        if (
+          tag == "textarea" ||
+          (tag == "input" &&
+            /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
+            typeof activeEl.selectionStart == "number")
+        ) {
+          return;
+        }
+        e.preventDefault();
+        if (e.clipboardData && e.clipboardData.getData) {
+          var text = e.clipboardData.getData("text/plain");
+          document.execCommand("insertHTML", false, text);
+        } else if (window.clipboardData && window.clipboardData.getData) {
+          var text = window.clipboardData.getData("Text");
+          insertTextAtCursor(text);
+        }
+      } catch (error) {
       }
     });
   },

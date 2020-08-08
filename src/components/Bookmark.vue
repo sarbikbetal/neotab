@@ -25,6 +25,7 @@
               @contextmenu="$event.stopPropagation()"
               class="link hover:underline"
               :href="link.url"
+              target="_blank"
             >{{link.title}}</a>
           </div>
         </div>

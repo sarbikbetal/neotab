@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar flex fixed w-full items-center justify-between px-6 h-16 z-10">
+  <nav class="navbar flex fixed w-full items-center justify-between px-3 md:px-6 h-16 z-10">
     <div class="flex items-center">
       <button class="mr-2" aria-label="Open Menu" @click="drawer">
         <svg

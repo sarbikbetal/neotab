@@ -25,9 +25,10 @@
           <transition-group name="sites" tag="div" class="flex">
             <a
               v-for="site in sites"
+              target="_blank"
               :href="site.url"
               :key="site.key"
-              class="thumb hover:shadow-md flex justify-center items-center"
+              class="thumb hover:shadow-md"
             >
               <img
                 class="favicon select-none"
@@ -38,7 +39,7 @@
             </a>
             <button
               :key="999999"
-              class="add-fav thumb hover:shadow-md flex justify-center items-center"
+              class="add-fav thumb hover:shadow-md"
             >
               <svg class="select-none" height="24" viewBox="0 0 24 24" width="24">
                 <path d="M0 0h24v24H0V0z" fill="none" />
@@ -148,6 +149,9 @@ export default {
   @apply w-10;
   @apply mx-2;
   @apply my-1;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
   @apply text-center;
   @apply rounded-full;
   @apply relative;
