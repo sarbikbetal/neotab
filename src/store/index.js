@@ -40,7 +40,12 @@ export default new Store({
         ],
         counters: [4, 8],
         columns: [0, 1, 2],
-        theme: "Dark"
+        theme: "Dark",
+        searchEngine: {
+            name: "DuckDuckGo",
+            url: "https://duckduckgo.com/?q=",
+            icon: "https://duckduckgo.com/favicon.ico",
+        }
     },
     mutations: {
         //Overwrite app state
@@ -52,6 +57,10 @@ export default new Store({
         // Set theme
         setTheme(state, theme) {
             state.theme = theme;
+        },
+        // Set search engine
+        setSearchEngine(state, searchEngine) {
+            state.searchEngine = searchEngine;
         },
         // Columns
         increaseCols(state) {

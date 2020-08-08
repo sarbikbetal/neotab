@@ -13,7 +13,7 @@
       </fab>
 
       <!-- Site thumbs -->
-      <section id="fav-bar" class="flex overflow-x-auto overflow-y-hidden no-scrollbar">
+      <section id="fav-bar" class="flex overflow-x-auto overflow-y-hidden no-scrollbar mx-6">
         <draggable
           v-model="sites"
           group="sites"
@@ -118,7 +118,7 @@ export default {
 }
 .fav-thumb-container {
   @apply flex;
-  @apply justify-center;
+  @apply justify-start;
   @apply pb-2;
   @apply rounded-md;
   @apply relative;

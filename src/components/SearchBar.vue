@@ -71,24 +71,29 @@ export default {
         {
           name: "Yandex",
           url: "https://yandex.com/search/?text=",
-          icon: "https://yastatic.net/iconostasis/_/KKii9ECKxo3QZnchF7ayZhbzOT8.png",
+          icon:
+            "https://yastatic.net/iconostasis/_/KKii9ECKxo3QZnchF7ayZhbzOT8.png",
         },
       ],
-      selected: undefined,
     };
   },
   computed: {
     selectedEngine() {
-      return this.selected || this.searchEngines[0];
+      return this.$store.state.searchEngine || this.searchEngines[0];
     },
   },
   methods: {
     search() {
-      var win = window.open(this.selectedEngine.url + this.terms, "_blank");
-      win.focus();
+      try {
+        var win = window.open(this.selectedEngine.url + this.terms, "_blank");
+        win.focus();
+      } catch (error) {
+        // show a popup and allow opening new sites
+        // window.location.href = this.selectedEngine.url + this.terms;
+      }
     },
     setEngine(item) {
-      this.selected = item;
+      this.$store.commit("setSearchEngine", item);
     },
   },
 };
