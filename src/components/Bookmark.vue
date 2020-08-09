@@ -122,7 +122,7 @@ export default {
         try {
           siteUrl = new URL(url).href;
         } catch (error) {
-          siteUrl = "https://" + (url.split("/")[0] || url);
+          siteUrl = "http://" + url;
         }
         if (this.bkmId) {
           this.$store.commit("updateBookmark", {

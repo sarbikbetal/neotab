@@ -22,7 +22,7 @@
           @end="drag=false"
           direction="horizontal"
         >
-          <transition-group name="sites" tag="div" class="flex">
+          <transition-group name="sites" tag="div" class="flex items-center">
             <a
               v-for="site in sites"
               target="_blank"
@@ -37,18 +37,33 @@
                 @error="loadDefault($event, site.url)"
               />
             </a>
-            <button
+            <!-- Add button -->
+            <div
               :key="999999"
-              class="add-fav thumb hover:shadow-md"
+              class="thumb transition-all duration-300"
+              :class="isAddFavOpen?'add-fav-open': 'add-fav'"
             >
-              <svg class="select-none" height="24" viewBox="0 0 24 24" width="24">
-                <path d="M0 0h24v24H0V0z" fill="none" />
-                <path
-                  fill="var(--text-light)"
-                  d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
-                />
-              </svg>
-            </button>
+              <input
+                id="favUrlInput"
+                @keydown.enter="addFavourite"
+                @keydown.esc="isAddFavOpen=false"
+                @blur="isAddFavOpen=false"
+                v-model="newFavUrl"
+                v-if="isAddFavOpen"
+                class="bg-transparent py-2 px-4 block w-full appearance-none leading-normal focus:outline-none"
+                type="text"
+                placeholder="Add a new favourite"
+              />
+              <button @click="toggleFavInput" class="focus:outline-none">
+                <svg class="select-none m-2" height="24" viewBox="0 0 24 24" width="24">
+                  <path d="M0 0h24v24H0V0z" fill="none" />
+                  <path
+                    fill="var(--text-light)"
+                    d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+                  />
+                </svg>
+              </button>
+            </div>
           </transition-group>
         </draggable>
       </section>
@@ -79,6 +94,8 @@ export default {
   },
   data: function () {
     return {
+      isAddFavOpen: false,
+      newFavUrl: "",
       sites: [
         {
           key: 0,
@@ -108,6 +125,31 @@ export default {
     scrollRight() {
       document.getElementById("fav-bar").scrollBy(280, 0);
     },
+    toggleFavInput(e) {
+      this.isAddFavOpen = !this.isAddFavOpen;
+    },
+    addFavourite() {
+      let url = this.newFavUrl;
+      if (url.length != 0) {
+        let siteUrl = url;
+        try {
+          siteUrl = new URL(url).href;
+        } catch (error) {
+          siteUrl = "https://" + url;
+        }
+
+        this.sites.push({
+          key: this.sites.length,
+          url: siteUrl,
+        });
+
+        this.newFavUrl = "";
+        this.isAddFavOpen = false;
+      }
+    },
+  },
+  updated() {
+    if (this.isAddFavOpen) document.getElementById("favUrlInput").focus();
   },
 };
 </script>
@@ -179,5 +221,13 @@ export default {
 }
 .sites-move {
   transition: transform 0.2s;
+}
+.add-fav {
+  @apply h-8;
+  @apply w-8;
+}
+.add-fav-open {
+  @apply h-10;
+  @apply w-64;
 }
 </style>
