@@ -45,7 +45,10 @@ export default new Store({
             name: "DuckDuckGo",
             url: "https://duckduckgo.com/?q=",
             icon: "https://duckduckgo.com/favicon.ico",
-        }
+        },
+        favSites: [
+            { key: 0, url: "https://medium.com" },
+        ],
     },
     mutations: {
         //Overwrite app state
@@ -61,6 +64,16 @@ export default new Store({
         // Set search engine
         setSearchEngine(state, searchEngine) {
             state.searchEngine = searchEngine;
+        },
+        // FavBar sites
+        addFavSite(state, url) {
+            state.favSites.push({
+                key: state.favSites.length,
+                url,
+            });
+        },
+        reorderFavs(state, { list }) {
+            state.favSites = list;
         },
         // Columns
         increaseCols(state) {

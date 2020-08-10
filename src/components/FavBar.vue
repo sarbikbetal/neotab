@@ -13,11 +13,13 @@
       </fab>
 
       <!-- Site thumbs -->
-      <section id="fav-bar" class="flex overflow-x-auto overflow-y-hidden no-scrollbar mx-6">
+      <section
+        id="fav-bar"
+        class="flex items-center overflow-x-auto overflow-y-hidden no-scrollbar mx-6"
+      >
         <draggable
           v-model="sites"
           group="sites"
-          filter=".add-fav"
           @start="drag=true"
           @end="drag=false"
           direction="horizontal"
@@ -37,35 +39,35 @@
                 @error="loadDefault($event, site.url)"
               />
             </a>
-            <!-- Add button -->
-            <div
-              :key="999999"
-              class="thumb transition-all duration-300"
-              :class="isAddFavOpen?'add-fav-open': 'add-fav'"
-            >
-              <input
-                id="favUrlInput"
-                @keydown.enter="addFavourite"
-                @keydown.esc="isAddFavOpen=false"
-                @blur="isAddFavOpen=false"
-                v-model="newFavUrl"
-                v-if="isAddFavOpen"
-                class="bg-transparent py-2 px-4 block w-full appearance-none leading-normal focus:outline-none"
-                type="text"
-                placeholder="Add a new favourite"
-              />
-              <button @click="toggleFavInput" class="focus:outline-none">
-                <svg class="select-none m-2" height="24" viewBox="0 0 24 24" width="24">
-                  <path d="M0 0h24v24H0V0z" fill="none" />
-                  <path
-                    fill="var(--text-light)"
-                    d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
-                  />
-                </svg>
-              </button>
-            </div>
           </transition-group>
         </draggable>
+        <!-- Add button -->
+        <div
+          :key="999999"
+          class="thumb transition-all duration-300"
+          :class="isAddFavOpen?'add-fav-open': 'add-fav'"
+        >
+          <input
+            id="favUrlInput"
+            @keydown.enter="addFavourite"
+            @keydown.esc="isAddFavOpen=false"
+            @blur="isAddFavOpen=false"
+            v-model="newFavUrl"
+            v-if="isAddFavOpen"
+            class="bg-transparent py-2 px-4 block w-full appearance-none leading-normal focus:outline-none"
+            type="text"
+            placeholder="Add a new favourite"
+          />
+          <button @click="toggleFavInput" class="focus:outline-none">
+            <svg class="select-none m-2" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                fill="var(--text-light)"
+                d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+              />
+            </svg>
+          </button>
+        </div>
       </section>
 
       <!-- Right scroll button -->
@@ -96,25 +98,17 @@ export default {
     return {
       isAddFavOpen: false,
       newFavUrl: "",
-      sites: [
-        {
-          key: 0,
-          url: "https://github.com",
-        },
-        {
-          key: 1,
-          url: "https://vuex.vuejs.org",
-        },
-        {
-          key: 2,
-          url: "https://www.npmjs.com",
-        },
-        {
-          key: 3,
-          url: "https://scotch.io",
-        },
-      ],
     };
+  },
+  computed: {
+    sites: {
+      get() {
+        return this.$store.state.favSites;
+      },
+      set(list) {
+        this.$store.commit("reorderFavs", { list });
+      },
+    },
   },
   methods: {
     getFavicon,
@@ -138,10 +132,11 @@ export default {
           siteUrl = "https://" + url;
         }
 
-        this.sites.push({
-          key: this.sites.length,
-          url: siteUrl,
-        });
+        this.$store.commit("addFavSite", siteUrl);
+        // this.sites.push({
+        //   key: this.sites.length,
+        //   url: siteUrl,
+        // });
 
         this.newFavUrl = "";
         this.isAddFavOpen = false;
@@ -149,7 +144,12 @@ export default {
     },
   },
   updated() {
-    if (this.isAddFavOpen) document.getElementById("favUrlInput").focus();
+    if (this.isAddFavOpen) {
+      document.getElementById("favUrlInput").focus();
+      setTimeout(() => {
+        document.getElementById("fav-bar").scrollBy(240, 0);
+      }, 300);
+    }
   },
 };
 </script>
