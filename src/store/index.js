@@ -129,7 +129,7 @@ export default new Store({
                 let cardIndex = cards.findIndex(card => card.id == id);
                 if (cardIndex != -1) {
                     let newCardList = cards.filter(card => card.id != id);
-                    state.cardData[i] = newCardList;
+                    Vue.set(state.cardData, i, newCardList);
                     break;
                 }
             }
