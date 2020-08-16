@@ -1,9 +1,16 @@
 <template>
   <div @click="hideMenu">
     <navigation />
-    <favBar @contextmenu.native="showMenu" />
+    <favBar @contextmenu.native="showMenu" v-bind="fav" />
     <board @contextmenu.native="showMenu" />
-    <contextMenu :show="menuVisible" :cardId="focusedCard" :text="selectedText" />
+    <contextMenu
+      :show="menuVisible"
+      :options="contextMenuOptions"
+      :position="position"
+      @Delete="deleteHandler"
+      @Edit="editHandler"
+      @Copy="copyToClipboard"
+    />
   </div>
 </template>
 
@@ -24,55 +31,76 @@ export default {
   data: function () {
     return {
       menuVisible: false,
-      focusedCard: undefined,
+      focusedItem: {
+        type: "",
+        id: "",
+      },
       selectedText: undefined,
+      position: {
+        top: 0,
+        left: 0,
+      },
+      contextMenuOptions: {
+        Copy: false,
+        Edit: false,
+        Delete: false,
+      },
+      fav: {
+        open: false,
+        url: "",
+      },
     };
   },
   methods: {
+    deleteHandler() {
+      if (this.focusedItem.type == "card")
+        this.$store.commit("deleteCard", {
+          id: this.focusedItem.id,
+        });
+      else if (this.focusedItem.type == "fav") {
+        this.fav.url = "";
+        this.fav.open = false;
+        this.$store.commit("deleteFav", this.focusedItem.id);
+      }
+    },
+    editHandler() {
+      if (this.focusedItem.type == "fav") {
+        this.fav.open = true;
+        this.$store.commit("deleteFav", this.focusedItem.id);
+      }
+    },
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.selectedText);
+    },
     showMenu(e) {
       e.preventDefault();
-      const origin = {
-        left: e.pageX,
-        top: e.pageY,
-      };
+
+      this.focusedItem = { type: "", id: "" };
+      this.contextMenuOptions.Delete = false;
+      this.selectedText = this.copyText();
+      this.contextMenuOptions.Copy = this.selectedText ? true : false;
+      this.fav.open = false;
+      this.fav.url = "";
 
       let levels = 3;
       let target = e.target;
-      this.focusedCard = undefined;
       while (levels--) {
         if (target.hasAttribute("card")) {
-          this.focusedCard = parseInt(target.getAttribute("card"));
+          this.focusedItem.type = "card";
+          this.focusedItem.id = parseInt(target.getAttribute("card"));
+          this.contextMenuOptions.Delete = true;
+          break;
+        } else if (target.hasAttribute("fav")) {
+          this.focusedItem.type = "fav";
+          this.focusedItem.id = parseInt(target.getAttribute("fav"));
+          this.fav.url = target.getAttribute("href");
+          this.contextMenuOptions.Delete = true;
+          this.contextMenuOptions.Edit = true;
           break;
         } else target = target.parentElement;
       }
 
-      this.setPosition(origin);
-      this.selectedText = this.copyText();
-    },
-    setPosition({ top, left }) {
-      console.log(top, left);
-      const menu = document.querySelector(".menu");
-      // menu.style.left = `${left}px`;
-      // menu.style.top = `${top}px`;
-
-      let menuWidth = menu.offsetWidth + 4;
-      let menuHeight = menu.offsetHeight + 4;
-
-      let windowWidth = window.innerWidth;
-      let windowHeight = window.innerHeight;
-
-      if (windowWidth - left < menuWidth) {
-        menu.style.left = windowWidth - menuWidth + "px";
-      } else {
-        menu.style.left = left + "px";
-      }
-
-      if (windowHeight - top < menuHeight) {
-        menu.style.top = windowHeight - menuHeight + "px";
-      } else {
-        menu.style.top = top + "px";
-      }
-
+      this.position = { top: e.pageY, left: e.pageX };
       this.menuVisible = true;
     },
     hideMenu() {

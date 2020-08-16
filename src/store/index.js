@@ -68,12 +68,15 @@ export default new Store({
         // FavBar sites
         addFavSite(state, url) {
             state.favSites.push({
-                key: state.favSites.length,
+                key: state.counters[1]++,
                 url,
             });
         },
         reorderFavs(state, { list }) {
             state.favSites = list;
+        },
+        deleteFav(state, favId) {
+            state.favSites = state.favSites.filter(fav => fav.key != favId);
         },
         // Columns
         increaseCols(state) {

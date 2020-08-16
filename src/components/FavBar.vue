@@ -1,6 +1,6 @@
 <template>
   <div class="favbar px-6 md:px-8 lg:px-10 pt-16">
-    <div class="fav-thumb-container">
+    <div class="fav-thumb-container" @click="isAddFavOpen=false">
       <!-- Left scroll button -->
       <fab @click.native="scrollLeft" class="scroll-btn left">
         <svg viewBox="0 0 24 24" fill="black" width="18px" height="18px">
@@ -28,6 +28,7 @@
             <a
               v-for="site in sites"
               target="_blank"
+              :fav="site.key"
               :href="site.url"
               :key="site.key"
               class="thumb hover:shadow-md"
@@ -46,12 +47,12 @@
           :key="999999"
           class="thumb transition-all duration-300"
           :class="isAddFavOpen?'add-fav-open': 'add-fav'"
+          @click="$event.stopPropagation()"
         >
           <input
             id="favUrlInput"
             @keydown.enter="addFavourite"
             @keydown.esc="isAddFavOpen=false"
-            @blur="isAddFavOpen=false"
             v-model="newFavUrl"
             v-if="isAddFavOpen"
             class="bg-transparent py-2 px-4 block w-full appearance-none leading-normal focus:outline-none"
@@ -94,11 +95,21 @@ export default {
     draggable,
     fab,
   },
+  props: {
+    open: { type: Boolean, default: false },
+    url: { type: String, default: "" },
+  },
   data: function () {
     return {
-      isAddFavOpen: false,
-      newFavUrl: "",
+      isAddFavOpen: this.open,
+      newFavUrl: this.url,
     };
+  },
+  watch: {
+    open: function () {
+      this.isAddFavOpen = this.open;
+      this.newFavUrl = this.url;
+    },
   },
   computed: {
     sites: {
@@ -120,7 +131,9 @@ export default {
       document.getElementById("fav-bar").scrollBy(280, 0);
     },
     toggleFavInput(e) {
-      this.isAddFavOpen = !this.isAddFavOpen;
+      e.stopPropagation();
+      if (this.isAddFavOpen) this.addFavourite();
+      else this.isAddFavOpen = true;
     },
     addFavourite() {
       let url = this.newFavUrl;
@@ -139,8 +152,8 @@ export default {
         // });
 
         this.newFavUrl = "";
-        this.isAddFavOpen = false;
       }
+      this.isAddFavOpen = false;
     },
   },
   updated() {

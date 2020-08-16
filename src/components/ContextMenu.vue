@@ -1,9 +1,13 @@
 <template>
-  <div class="menu" :class="show? 'show-menu':''">
+  <div :style="getPosition" class="menu" :class="show? 'show-menu':''">
     <ul class="menu-options">
-      <li @click="copy" class="menu-option" :class="text ? '': 'menu-disabled'">Copy</li>
-      <li class="divider"></li>
-      <li @click="deleteCard" class="menu-option" :class="cardId ? '': 'menu-disabled'">Delete</li>
+      <li
+        v-for="(value, action) in options"
+        :key="action"
+        @click="$emit(action)"
+        class="menu-option"
+        :class="value ? '': 'menu-disabled'"
+      >{{action}}</li>
     </ul>
   </div>
 </template>
@@ -13,17 +17,31 @@ export default {
   name: "contextMenu",
   props: {
     show: Boolean,
-    cardId: Number,
-    text: String,
+    options: Object,
+    position: Object,
   },
-  methods: {
-    deleteCard() {
-      this.$store.commit("deleteCard", {
-        id: this.cardId,
-      });
-    },
-    copy() {
-      navigator.clipboard.writeText(this.text);
+  computed: {
+    getPosition: function () {
+      let { top, left } = this.position;
+      let menuWidth = 124;
+      let menuHeight = 44;
+
+      let windowWidth = window.innerWidth;
+      let windowHeight = window.innerHeight;
+
+      if (windowWidth - left < menuWidth) {
+        left = 1 + windowWidth - menuWidth + "px";
+      } else {
+        left = 1 + left + "px";
+      }
+
+      if (windowHeight - top < menuHeight) {
+        top = 1 + windowHeight - menuHeight + "px";
+      } else {
+        top = 1 + top + "px";
+      }
+      
+      return { top, left };
     },
   },
 };
@@ -39,7 +57,6 @@ export default {
   width: 120px;
   position: absolute;
 }
-
 .show-menu {
   @apply block;
   @apply opacity-100;
@@ -61,10 +78,5 @@ export default {
 .menu .menu-options .menu-option:hover {
   @apply rounded;
   background-color: var(--primary);
-}
-
-.menu .menu-options .divider {
-  background-color: var(--primary);
-  height: 1px;
 }
 </style>
