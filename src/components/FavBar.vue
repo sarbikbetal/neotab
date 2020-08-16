@@ -1,6 +1,6 @@
 <template>
   <div class="favbar px-6 md:px-8 lg:px-10 pt-16">
-    <div class="fav-thumb-container">
+    <div class="fav-thumb-container" @click="isAddFavOpen=false">
       <!-- Left scroll button -->
       <fab @click.native="scrollLeft" class="scroll-btn left">
         <svg viewBox="0 0 24 24" fill="black" width="18px" height="18px">
@@ -13,21 +13,25 @@
       </fab>
 
       <!-- Site thumbs -->
-      <section id="fav-bar" class="flex overflow-x-auto overflow-y-hidden no-scrollbar">
+      <section
+        id="fav-bar"
+        class="flex items-center overflow-x-auto overflow-y-hidden no-scrollbar mx-6"
+      >
         <draggable
           v-model="sites"
           group="sites"
-          filter=".add-fav"
           @start="drag=true"
           @end="drag=false"
           direction="horizontal"
         >
-          <transition-group name="sites" tag="div" class="flex">
+          <transition-group name="sites" tag="div" class="flex items-center">
             <a
               v-for="site in sites"
+              target="_blank"
+              :fav="site.key"
               :href="site.url"
               :key="site.key"
-              class="thumb hover:shadow-md flex justify-center items-center"
+              class="thumb hover:shadow-md"
             >
               <img
                 class="favicon select-none"
@@ -36,20 +40,35 @@
                 @error="loadDefault($event, site.url)"
               />
             </a>
-            <button
-              :key="999999"
-              class="add-fav thumb hover:shadow-md flex justify-center items-center"
-            >
-              <svg class="select-none" height="24" viewBox="0 0 24 24" width="24">
-                <path d="M0 0h24v24H0V0z" fill="none" />
-                <path
-                  fill="var(--text-light)"
-                  d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
-                />
-              </svg>
-            </button>
           </transition-group>
         </draggable>
+        <!-- Add button -->
+        <div
+          :key="999999"
+          class="thumb transition-all duration-300"
+          :class="isAddFavOpen?'add-fav-open': 'add-fav'"
+          @click="$event.stopPropagation()"
+        >
+          <input
+            id="favUrlInput"
+            @keydown.enter="addFavourite"
+            @keydown.esc="isAddFavOpen=false"
+            v-model="newFavUrl"
+            v-if="isAddFavOpen"
+            class="bg-transparent py-2 px-4 block w-full appearance-none leading-normal focus:outline-none"
+            type="text"
+            placeholder="Add a new favourite"
+          />
+          <button @click="toggleFavInput" class="focus:outline-none">
+            <svg class="select-none m-2" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                fill="var(--text-light)"
+                d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
+              />
+            </svg>
+          </button>
+        </div>
       </section>
 
       <!-- Right scroll button -->
@@ -76,27 +95,31 @@ export default {
     draggable,
     fab,
   },
+  props: {
+    open: { type: Boolean, default: false },
+    url: { type: String, default: "" },
+  },
   data: function () {
     return {
-      sites: [
-        {
-          key: 0,
-          url: "https://github.com",
-        },
-        {
-          key: 1,
-          url: "https://vuex.vuejs.org",
-        },
-        {
-          key: 2,
-          url: "https://www.npmjs.com",
-        },
-        {
-          key: 3,
-          url: "https://scotch.io",
-        },
-      ],
+      isAddFavOpen: this.open,
+      newFavUrl: this.url,
     };
+  },
+  watch: {
+    open: function () {
+      this.isAddFavOpen = this.open;
+      this.newFavUrl = this.url;
+    },
+  },
+  computed: {
+    sites: {
+      get() {
+        return this.$store.state.favSites;
+      },
+      set(list) {
+        this.$store.commit("reorderFavs", { list });
+      },
+    },
   },
   methods: {
     getFavicon,
@@ -107,6 +130,39 @@ export default {
     scrollRight() {
       document.getElementById("fav-bar").scrollBy(280, 0);
     },
+    toggleFavInput(e) {
+      e.stopPropagation();
+      if (this.isAddFavOpen) this.addFavourite();
+      else this.isAddFavOpen = true;
+    },
+    addFavourite() {
+      let url = this.newFavUrl;
+      if (url.length != 0) {
+        let siteUrl = url;
+        try {
+          siteUrl = new URL(url).href;
+        } catch (error) {
+          siteUrl = "https://" + url;
+        }
+
+        this.$store.commit("addFavSite", siteUrl);
+        // this.sites.push({
+        //   key: this.sites.length,
+        //   url: siteUrl,
+        // });
+
+        this.newFavUrl = "";
+      }
+      this.isAddFavOpen = false;
+    },
+  },
+  updated() {
+    if (this.isAddFavOpen) {
+      document.getElementById("favUrlInput").focus();
+      setTimeout(() => {
+        document.getElementById("fav-bar").scrollBy(240, 0);
+      }, 300);
+    }
   },
 };
 </script>
@@ -117,7 +173,7 @@ export default {
 }
 .fav-thumb-container {
   @apply flex;
-  @apply justify-center;
+  @apply justify-start;
   @apply pb-2;
   @apply rounded-md;
   @apply relative;
@@ -148,6 +204,9 @@ export default {
   @apply w-10;
   @apply mx-2;
   @apply my-1;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
   @apply text-center;
   @apply rounded-full;
   @apply relative;
@@ -175,5 +234,13 @@ export default {
 }
 .sites-move {
   transition: transform 0.2s;
+}
+.add-fav {
+  @apply h-8;
+  @apply w-8;
+}
+.add-fav-open {
+  @apply h-10;
+  @apply w-64;
 }
 </style>

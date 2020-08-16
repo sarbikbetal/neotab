@@ -40,7 +40,15 @@ export default new Store({
         ],
         counters: [4, 8],
         columns: [0, 1, 2],
-        theme: "Dark"
+        theme: "Dark",
+        searchEngine: {
+            name: "DuckDuckGo",
+            url: "https://duckduckgo.com/?q=",
+            icon: "https://duckduckgo.com/favicon.ico",
+        },
+        favSites: [
+            { key: 0, url: "https://medium.com" },
+        ],
     },
     mutations: {
         //Overwrite app state
@@ -52,6 +60,23 @@ export default new Store({
         // Set theme
         setTheme(state, theme) {
             state.theme = theme;
+        },
+        // Set search engine
+        setSearchEngine(state, searchEngine) {
+            state.searchEngine = searchEngine;
+        },
+        // FavBar sites
+        addFavSite(state, url) {
+            state.favSites.push({
+                key: state.counters[1]++,
+                url,
+            });
+        },
+        reorderFavs(state, { list }) {
+            state.favSites = list;
+        },
+        deleteFav(state, favId) {
+            state.favSites = state.favSites.filter(fav => fav.key != favId);
         },
         // Columns
         increaseCols(state) {
@@ -107,7 +132,7 @@ export default new Store({
                 let cardIndex = cards.findIndex(card => card.id == id);
                 if (cardIndex != -1) {
                     let newCardList = cards.filter(card => card.id != id);
-                    state.cardData[i] = newCardList;
+                    Vue.set(state.cardData, i, newCardList);
                     break;
                 }
             }
