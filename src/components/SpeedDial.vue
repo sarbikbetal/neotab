@@ -3,9 +3,11 @@
     :class="open ? 'md-active' : ''"
     class="md-speed-dial md-fab-bottom-right md-theme-default md-mode-scale md-direction-top"
   >
+    <div @keydown.esc="open = false" v-show="open" class="fixed inset-0 transition-opacity">
+      <div @click="open = false" class="absolute inset-0 bg-black opacity-50" tabindex="0"></div>
+    </div>
     <button
       @click="toggleSD"
-      type="button"
       class="flex md-button items-center justify-between md-ripple text-gray-800"
       style="padding: 8px 20px 8px 12px;"
       md-fab-trigger
@@ -29,7 +31,6 @@
 
     <button
       @click="addNoteCard"
-      type="button"
       class="flex md-button md-ripple justify-between text-gray-800"
       style="padding: 8px 20px 8px 12px;"
     >
@@ -44,7 +45,6 @@
     </button>
     <button
       @click="addTodoCard"
-      type="button"
       class="flex md-button md-ripple justify-between text-gray-800"
       style="padding: 8px 20px 8px 12px;"
     >
@@ -59,7 +59,6 @@
     </button>
     <button
       @click="addBookmarkCard"
-      type="button"
       class="flex md-button md-ripple justify-between text-gray-800"
       style="padding: 8px 20px 8px 12px;"
     >
@@ -86,9 +85,6 @@ export default {
   methods: {
     toggleSD(e) {
       this.open = !this.open;
-    },
-    hideSD(e) {
-      this.open = false;
     },
     addNoteCard(e) {
       this.$store.commit("addNoteCard");

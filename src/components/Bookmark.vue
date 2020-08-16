@@ -25,6 +25,7 @@
               @contextmenu="$event.stopPropagation()"
               class="link hover:underline"
               :href="link.url"
+              target="_blank"
             >{{link.title}}</a>
           </div>
         </div>
@@ -121,7 +122,7 @@ export default {
         try {
           siteUrl = new URL(url).href;
         } catch (error) {
-          siteUrl = "https://" + (url.split("/")[0] || url);
+          siteUrl = "http://" + url;
         }
         if (this.bkmId) {
           this.$store.commit("updateBookmark", {

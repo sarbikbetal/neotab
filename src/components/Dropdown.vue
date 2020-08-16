@@ -2,7 +2,6 @@
   <div class="dropdown">
     <svg
       class="w-2 h-2 absolute top-0 right-0 m-4 pointer-events-none"
-      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 412 232"
     >
       <path
