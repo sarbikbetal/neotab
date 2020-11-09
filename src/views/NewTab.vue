@@ -1,6 +1,6 @@
 <template>
   <div @click="hideMenu">
-    <navigation />
+    <speedDial class="add-widget" />
     <favBar @contextmenu.native="showMenu" v-bind="fav" />
     <board @contextmenu.native="showMenu" />
     <contextMenu
@@ -15,16 +15,16 @@
 </template>
 
 <script>
-import navigation from "@/components/NavBar";
-import board from "@/components/Board";
-import favBar from "@/components/FavBar";
-import contextMenu from "@/components/ContextMenu";
+import board from '@/components/Board'
+import favBar from '@/components/FavBar'
+import contextMenu from '@/components/ContextMenu'
+import speedDial from '@/components/SpeedDial'
 
 export default {
-  name: "newtab",
+  name: 'NewTab',
   components: {
-    navigation,
     board,
+    speedDial,
     favBar,
     contextMenu,
   },
@@ -32,8 +32,8 @@ export default {
     return {
       menuVisible: false,
       focusedItem: {
-        type: "",
-        id: "",
+        type: '',
+        id: '',
       },
       selectedText: undefined,
       position: {
@@ -47,95 +47,101 @@ export default {
       },
       fav: {
         open: false,
-        url: "",
+        url: '',
       },
-    };
+    }
   },
   methods: {
     deleteHandler() {
-      if (this.focusedItem.type == "card")
-        this.$store.commit("deleteCard", {
+      if (this.focusedItem.type == 'card')
+        this.$store.commit('deleteCard', {
           id: this.focusedItem.id,
-        });
-      else if (this.focusedItem.type == "fav") {
-        this.fav.url = "";
-        this.fav.open = false;
-        this.$store.commit("deleteFav", this.focusedItem.id);
+        })
+      else if (this.focusedItem.type == 'fav') {
+        this.fav.url = ''
+        this.fav.open = false
+        this.$store.commit('deleteFav', this.focusedItem.id)
       }
     },
     editHandler() {
-      if (this.focusedItem.type == "fav") {
-        this.fav.open = true;
-        this.$store.commit("deleteFav", this.focusedItem.id);
+      if (this.focusedItem.type == 'fav') {
+        this.fav.open = true
+        this.$store.commit('deleteFav', this.focusedItem.id)
       }
     },
     copyToClipboard() {
-      navigator.clipboard.writeText(this.selectedText);
+      navigator.clipboard.writeText(this.selectedText)
     },
     showMenu(e) {
-      e.preventDefault();
+      e.preventDefault()
 
-      this.focusedItem = { type: "", id: "" };
-      this.contextMenuOptions.Delete = false;
-      this.selectedText = this.copyText();
-      this.contextMenuOptions.Copy = this.selectedText ? true : false;
-      this.fav.open = false;
-      this.fav.url = "";
+      this.focusedItem = { type: '', id: '' }
+      this.contextMenuOptions.Delete = false
+      this.selectedText = this.copyText()
+      this.contextMenuOptions.Copy = this.selectedText ? true : false
+      this.fav.open = false
+      this.fav.url = ''
 
-      let levels = 3;
-      let target = e.target;
+      let levels = 3
+      let target = e.target
       while (levels--) {
-        if (target.hasAttribute("card")) {
-          this.focusedItem.type = "card";
-          this.focusedItem.id = parseInt(target.getAttribute("card"));
-          this.contextMenuOptions.Delete = true;
-          break;
-        } else if (target.hasAttribute("fav")) {
-          this.focusedItem.type = "fav";
-          this.focusedItem.id = parseInt(target.getAttribute("fav"));
-          this.fav.url = target.getAttribute("href");
-          this.contextMenuOptions.Delete = true;
-          this.contextMenuOptions.Edit = true;
-          break;
-        } else target = target.parentElement;
+        if (target.hasAttribute('card')) {
+          this.focusedItem.type = 'card'
+          this.focusedItem.id = parseInt(target.getAttribute('card'))
+          this.contextMenuOptions.Delete = true
+          break
+        } else if (target.hasAttribute('fav')) {
+          this.focusedItem.type = 'fav'
+          this.focusedItem.id = parseInt(target.getAttribute('fav'))
+          this.fav.url = target.getAttribute('href')
+          this.contextMenuOptions.Delete = true
+          this.contextMenuOptions.Edit = true
+          break
+        } else target = target.parentElement
       }
 
-      this.position = { top: e.pageY, left: e.pageX };
-      this.menuVisible = true;
+      this.position = { top: e.pageY, left: e.pageX }
+      this.menuVisible = true
     },
     hideMenu() {
-      this.menuVisible = false;
+      this.menuVisible = false
     },
     copyText() {
-      let text = "";
-      let activeEl = document.activeElement;
-      let activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+      let text = ''
+      let activeEl = document.activeElement
+      let activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null
       if (
-        activeElTagName == "textarea" ||
-        (activeElTagName == "input" &&
+        activeElTagName == 'textarea' ||
+        (activeElTagName == 'input' &&
           /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
-          typeof activeEl.selectionStart == "number")
+          typeof activeEl.selectionStart == 'number')
       ) {
         text = activeEl.value.slice(
           activeEl.selectionStart,
-          activeEl.selectionEnd
-        );
+          activeEl.selectionEnd,
+        )
       } else if (window.getSelection) {
-        text = window.getSelection().toString();
+        text = window.getSelection().toString()
       }
-      return text;
+      return text
     },
   },
   beforeCreate() {
-    const stateString = window.localStorage.getItem("app-state");
-    const oldState = JSON.parse(stateString);
+    const stateString = window.localStorage.getItem('app-state')
+    const oldState = JSON.parse(stateString)
 
     if (oldState) {
-      this.$store.commit("initialiseStore", oldState);
+      this.$store.commit('initialiseStore', oldState)
     }
   },
-};
+}
 </script>
 
 <style>
+.add-widget {
+  transition: all 400ms;
+  position: absolute;
+  right: 2rem;
+  top: calc(calc(var(--vh, 1vh) * 99) - 5rem);
+}
 </style>
