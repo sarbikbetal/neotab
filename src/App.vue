@@ -1,43 +1,43 @@
 <template>
   <div @contextmenu="$event.preventDefault()" id="app">
-    <newtab />
+    <navigation />
+    <router-view />
   </div>
 </template>
 
 <script>
-import newtab from "@/views/NewTab.vue";
+import navigation from '@/components/NavBar'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    newtab,
+    navigation,
   },
   mounted: function () {
-    console.log("Paste filter registered");
-    document.querySelector("#app").addEventListener("paste", function (e) {
-      let tag = e.target.tagName.toLowerCase();
+    console.log('Paste filter registered')
+    document.querySelector('#app').addEventListener('paste', function (e) {
+      let tag = e.target.tagName.toLowerCase()
       try {
         if (
-          tag == "textarea" ||
-          (tag == "input" &&
+          tag == 'textarea' ||
+          (tag == 'input' &&
             /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
-            typeof activeEl.selectionStart == "number")
+            typeof activeEl.selectionStart == 'number')
         ) {
-          return;
+          return
         }
-        e.preventDefault();
+        e.preventDefault()
         if (e.clipboardData && e.clipboardData.getData) {
-          var text = e.clipboardData.getData("text/plain");
-          document.execCommand("insertHTML", false, text);
+          var text = e.clipboardData.getData('text/plain')
+          document.execCommand('insertHTML', false, text)
         } else if (window.clipboardData && window.clipboardData.getData) {
-          var text = window.clipboardData.getData("Text");
-          insertTextAtCursor(text);
+          var text = window.clipboardData.getData('Text')
+          insertTextAtCursor(text)
         }
-      } catch (error) {
-      }
-    });
+      } catch (error) {}
+    })
   },
-};
+}
 </script>
 
 <style>
