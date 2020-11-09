@@ -23,7 +23,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       let id = to.query.r
       if (id)
-        fetch(`http://neotab.herokuapp.com/room?r=${id}`)
+        fetch(`https://neotab.herokuapp.com/room?r=${id}`)
           .then(res => res.json())
           .then(data => {
             if (data.exists) next()
