@@ -14,7 +14,29 @@ const routes = [
     path: '/rtc',
     name: 'RTC',
     component: function() {
-      return import('../views/RTC.vue')
+      return import('../views/RTCHome.vue')
+    },
+  },
+  {
+    path: '/rtc/join',
+    name: 'Join room',
+    beforeEnter: (to, from, next) => {
+      let id = to.query.r
+      if (id)
+        fetch(`http://neotab.herokuapp.com/room?r=${id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.exists) next()
+            else next({ path: '/404' })
+          })
+          .catch(err => {
+            console.log(err)
+            next({ path: '/rtc' })
+          })
+      else next('/rtc')
+    },
+    component: function() {
+      return import('../views/RTCJoin.vue')
     },
   },
   // {
