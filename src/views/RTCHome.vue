@@ -7,7 +7,8 @@
 </template>
 
 <script>
-import { getSocket } from '../services/socket'
+import io from 'socket.io-client'
+const socket = io('https://neotab.herokuapp.com/')
 
 export default {
   data: function () {
@@ -17,11 +18,9 @@ export default {
   },
   methods: {
     createRoom() {
-      getSocket().then((socket) => {
-        socket.emit('host-room', (id) => {
-          socket.close()
-          this.$router.push({ path: '/rtc/join', query: { r: id } })
-        })
+      socket.emit('host-room', (id) => {
+        socket.close()
+        this.$router.push({ path: '/rtc/join', query: { r: id } })
       })
     },
     joinRoom() {
