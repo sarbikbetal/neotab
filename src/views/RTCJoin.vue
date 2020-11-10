@@ -1,10 +1,19 @@
 <template>
-  <div style="padding-top: 96px" id="videoGrid">
-    <h1>Hello all</h1>
-    <input type="text" v-model="username" />
-    <button :disabled="!socketConnected" @click="joinRoom">Connect</button>
-    <button @click="toggleCamera">Toggle camera</button>
-    <button @click="toggleMic">Toggle mic</button>
+  <div style="padding-top: 96px" class="container">
+    <div class="row text-center">
+      <h1 class="text-xl" ref="pageDesc">
+        {{ connectedToRoom ? 'Connected to room' : "You're in the lobby" }}
+      </h1>
+      <div v-if="!connectedToRoom">
+        <input class="text-blue-800" type="text" v-model="username" />
+        <button :disabled="!socketConnected" @click="joinRoom">Connect</button>
+      </div>
+    </div>
+    <div class="row text-center">
+      <button @click="toggleCamera">Toggle camera</button>
+      <button @click="toggleMic">Toggle mic</button>
+    </div>
+    <div id="videoGrid"></div>
   </div>
 </template>
 
@@ -20,6 +29,7 @@ let myPeer
 export default {
   data: function () {
     return {
+      connectedToRoom: false,
       username: undefined,
       socketConnected: false,
       peerId: undefined,
@@ -40,6 +50,11 @@ export default {
           this.username,
           (reply) => {
             console.log(reply)
+            this.connectedToRoom = true
+            this.$snack.success({
+              text: 'Connected to room',
+              button: 'OK',
+            })
           },
         )
     },
@@ -50,6 +65,7 @@ export default {
       call.on('stream', (userVideoStream) => {
         this.addVideoStream(video, userVideoStream)
       })
+
       call.on('close', () => {
         video.remove()
       })
@@ -77,7 +93,18 @@ export default {
         this.videoEnabled = true
       }
     },
-    toggleMic() {},
+    toggleMic() {
+      let audioTracks = this.myMediaStream.getAudioTracks()
+      if (this.videoEnabled) {
+        audioTracks.forEach((track) => {
+          track.enabled = false
+        })
+        this.audioEnabled = false
+      } else {
+        audioTracks[0].enabled = true
+        this.audioEnabled = true
+      }
+    },
   },
   mounted: function () {
     this.$nextTick(function () {
@@ -88,12 +115,20 @@ export default {
       })
 
       socket.on('connect', () => {
-        console.log('Socket connected')
+        console.log('Socket connected: ', socket.id)
+        this.$snack.success({
+          text: `Socket connected`,
+          button: 'OK',
+        })
         this.socketConnected = true
       })
 
-      socket.on('user-disconnected', (userId) => {
-        console.log('user disconnected', userId)
+      socket.on('user-disconnected', (userId, handle) => {
+        console.log('user disconnected', handle)
+        this.$snack.error({
+          text: `${handle} left the meeting`,
+          button: 'OK',
+        })
         if (peers.has(userId)) {
           peers.get(userId).close()
           peers.delete(userId)
@@ -102,6 +137,10 @@ export default {
 
       myPeer.on('open', (id) => {
         console.log('Peer connected: ', id)
+        this.$snack.success({
+          text: `WebRTC connected`,
+          button: 'OK',
+        })
         this.peerId = id
       })
 
@@ -125,7 +164,11 @@ export default {
             })
           })
 
-          socket.on('user-connected', (userId) => {
+          socket.on('user-connected', (userId, handle) => {
+            this.$snack.success({
+              text: `${handle} joined the room`,
+              button: 'OK',
+            })
             this.connectToNewUser(userId, stream)
           })
         })
@@ -139,5 +182,11 @@ button {
   margin: 4px 12px;
   border: 2px dotted teal;
   padding: 4px;
+}
+
+#videoGrid {
+  @apply pt-4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 </style>

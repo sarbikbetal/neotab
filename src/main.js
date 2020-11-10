@@ -10,7 +10,7 @@ import '@/plugins/vue-snack/vue-snack.min.css'
 Vue.config.productionTip = false
 
 Vue.use(VueSnackbar, {
-  position: 'top-right',
+  position: 'bottom-right',
   time: 5000,
   methods: [
     { name: 'success', color: '#00ff8c' },
