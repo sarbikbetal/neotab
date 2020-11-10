@@ -5,7 +5,7 @@
         {{ connectedToRoom ? 'Connected to room' : "You're in the lobby" }}
       </h1>
       <div v-if="!connectedToRoom">
-        <input class="text-blue-800" type="text" v-model="username" />
+        <input class="text-blue-800" type="text" placeholder=" handle" v-model="username" />
         <button :disabled="!socketConnected" @click="joinRoom">Connect</button>
       </div>
     </div>
@@ -13,7 +13,9 @@
       <button @click="toggleCamera">Toggle camera</button>
       <button @click="toggleMic">Toggle mic</button>
     </div>
-    <div id="videoGrid"></div>
+    <div id="videoGrid">
+      <video ref="myVideo"></video>
+    </div>
   </div>
 </template>
 
@@ -123,6 +125,15 @@ export default {
         this.socketConnected = true
       })
 
+      socket.on('disconnect', () => {
+        console.log('Socket disconnected')
+        this.$snack.show({
+          text: `Socket connected`,
+          button: 'OK',
+        })
+        this.socketConnected = true
+      })
+
       socket.on('user-disconnected', (userId, handle) => {
         console.log('user disconnected', handle)
         this.$snack.error({
@@ -144,7 +155,7 @@ export default {
         this.peerId = id
       })
 
-      const myVideo = document.createElement('video')
+      const myVideo = this.$refs.myVideo
       myVideo.muted = true
 
       navigator.mediaDevices
@@ -153,8 +164,10 @@ export default {
           audio: this.audioEnabled,
         })
         .then((stream) => {
-          this.myMediaStream = stream
-          this.addVideoStream(myVideo, stream)
+          myVideo.srcObject = stream
+          myVideo.addEventListener('loadedmetadata', () => {
+            myVideo.play()
+          })
 
           myPeer.on('call', (call) => {
             call.answer(stream)
@@ -188,5 +201,8 @@ button {
   @apply pt-4;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+}
+video {
+  margin: 12px;
 }
 </style>
